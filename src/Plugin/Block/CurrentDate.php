@@ -61,6 +61,13 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
   /**
    * {@inheritdoc}
    */
+  public function getMachineNameSuggestion() {
+    return 'current_date';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     return [
       // This needs to be wrapped in its own key so that #attributes doesn't get
