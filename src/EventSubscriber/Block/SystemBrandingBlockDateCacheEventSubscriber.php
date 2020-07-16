@@ -4,7 +4,7 @@ namespace Drupal\omnipedia_block\EventSubscriber\Block;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\hook_event_dispatcher\HookEventDispatcherInterface;
-use Drupal\hook_event_dispatcher\Event\Block\BlockBuildAlterEvent;
+use Drupal\core_event_dispatcher\Event\Block\BlockBuildAlterEvent;
 use Drupal\omnipedia_core\Service\TimelineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -48,7 +48,7 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
   /**
    * Alter the 'system_branding_block' build array.
    *
-   * @param \Drupal\hook_event_dispatcher\Event\Block\BlockBuildAlterEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Block\BlockBuildAlterEvent $event
    *   The event object.
    */
   public function blockBuildAlter(BlockBuildAlterEvent $event): void {
