@@ -127,7 +127,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * {@inheritdoc}
    */
   public function build() {
-    /** @var \Drupal\node\NodeInterface|null */
+    /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
     $node = $this->currentRouteMatch->getParameter('node');
 
     // This contains the render array for the block.
@@ -160,7 +160,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
 
     // Data for this wiki node and its revisions.
     /** @var array */
-    $nodeRevisions = $this->wiki->getWikiNodeRevisions($node);
+    $nodeRevisions = $node->getWikiNodeRevisions();
 
     foreach ($nodeRevisions as $nodeRevision) {
       // The route to check access to and link to.
