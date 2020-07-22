@@ -11,7 +11,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\StackedRouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\TimelineInterface;
-use Drupal\omnipedia_core\Service\WikiInterface;
+use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -50,11 +50,11 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
   protected $timeline;
 
   /**
-   * The Omnipedia wiki service.
+   * The Omnipedia wiki node resolver service.
    *
-   * @var \Drupal\omnipedia_core\Service\WikiInterface
+   * @var \Drupal\omnipedia_core\Service\WikiNodeResolverInterface
    */
-  protected $wiki;
+  protected $wikiNodeResolver;
 
   /**
    * {@inheritdoc}
@@ -68,15 +68,15 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * @param \Drupal\omnipedia_core\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
    *
-   * @param \Drupal\omnipedia_core\Service\WikiInterface $wiki
-   *   The Omnipedia wiki service.
+   * @param \Drupal\omnipedia_core\Service\WikiNodeResolverInterface $wikiNodeResolver
+   *   The Omnipedia wiki node resolver service.
    */
   public function __construct(
     array $configuration, string $pluginID, array $pluginDefinition,
     AccessManagerInterface      $accessManager,
     StackedRouteMatchInterface  $currentRouteMatch,
     TimelineInterface           $timeline,
-    WikiInterface               $wiki
+    WikiNodeResolverInterface   $wikiNodeResolver
   ) {
     parent::__construct($configuration, $pluginID, $pluginDefinition);
 
@@ -84,7 +84,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $this->accessManager      = $accessManager;
     $this->currentRouteMatch  = $currentRouteMatch;
     $this->timeline           = $timeline;
-    $this->wiki               = $wiki;
+    $this->wikiNodeResolver   = $wikiNodeResolver;
   }
 
   /**
@@ -99,7 +99,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       $container->get('access_manager'),
       $container->get('current_route_match'),
       $container->get('omnipedia.timeline'),
-      $container->get('omnipedia.wiki')
+      $container->get('omnipedia.wiki_node_resolver')
     );
   }
 
@@ -141,7 +141,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
 
     // Return the render array with just cache metadata if the current route
     // doesn't contain a wiki node as a parameter.
-    if (!$this->wiki->isWikiNode($node)) {
+    if (!$this->wikiNodeResolver->isWikiNode($node)) {
       return $renderArray;
     }
 
