@@ -1,9 +1,10 @@
 services:
-  # Event subscriber to Omnipedia date cache context and tags to
+  # Event subscriber to add cache contexts and tags to the
   # 'system_branding_block' block.
   omnipedia_block.block_system_branding_block_date_cache_event_subscriber:
     class: Drupal\omnipedia_block\EventSubscriber\Block\SystemBrandingBlockDateCacheEventSubscriber
     arguments:
       - '@omnipedia.timeline'
+      - '@omnipedia.wiki_node_main_page'
     tags:
       - { name: 'event_subscriber' }
