@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Omnipedia founder message.
+ *
+ * Available variables:
+ *
+ * - 'body': The body content.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{{ attach_library('omnipedia_block/component.founder_message') }}
+
+{% set base_class = 'omnipedia-founder-message' %}
+
+<div{{ create_attribute({'class': [base_class]}) }}>{{ body }}</div>

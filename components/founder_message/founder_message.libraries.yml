@@ -1,0 +1,4 @@
+component.founder_message:
+  css:
+    component:
+      founder_message.css: {}

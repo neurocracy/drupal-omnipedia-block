@@ -1,0 +1,104 @@
+// -----------------------------------------------------------------------------
+//   Omnipedia founder message stylesheet
+// -----------------------------------------------------------------------------
+
+@import '../../../../ambientimpact/ambientimpact_core/stylesheets/_common.scss';
+@import '../../../_components.scss';
+
+.block-omnipedia-founder-message {
+  position: relative;
+
+  // Set a min-height so that the founder photo has enough space to not get too
+  // small vertically and horizontally.
+  min-height: $founder-block-min-height;
+
+  box-sizing: border-box;
+
+  // This adds a photo of the founder to the block. On narrower screens, the
+  // photo element is placed after the block content, at the bottom of the
+  // block. On wider screens, the photo is placed to the left (on LTR) or to
+  // the right (on RTL) of the content.
+  @supports (background-size: contain) {
+    // So that the top: -1px; lower down for Chrome gets clipped at the block
+    // border.
+    overflow: hidden;
+
+    // @include contain-floats;
+
+    &::after {
+      content: '';
+
+      position: relative;
+
+      bottom: -$founder-block-padding;
+
+      display: block;
+
+      height: $founder-photo-standalone-height;
+
+      grid-area: photo;
+
+      background-image:     url($founder-photo-url-fallback);
+      background-image:     url($founder-photo-url);
+      background-repeat:    no-repeat;
+      background-position:  bottom left;
+      background-size:      contain;
+
+      // Just in case this overlays the text by accident, disable pointer
+      // events so the text underneath is selectable by pointer.
+      pointer-events: none;
+
+      @include media('>=omnipedia-founder-block-photo-inline') {
+        position: absolute;
+
+        @include root-conditions(('[dir=ltr]'), 'html') {
+          left: 0;
+        }
+        @include root-conditions(('[dir=rtl]'), 'html') {
+          right: 0;
+        }
+
+        // Compensates for rounding errors in Chrome at certain zoom levels.
+        top:    -1px;
+
+        width:  $founder-photo-inline-max-width;
+        height: auto;
+      }
+    }
+  }
+
+  @supports (background-size: contain) {
+    @include media('>=omnipedia-founder-block-photo-inline') {
+      @include use-grid {
+        display: grid;
+
+        grid-template-areas:
+          'photo title'
+          'photo content';
+        grid-template-columns:  $founder-photo-inline-max-width 1fr;
+        grid-template-rows:     min-content 1fr;
+      }
+    }
+  }
+
+  .block__title {
+    grid-area: title;
+  }
+  .omnipedia-founder-message {
+    grid-area: content;
+  }
+
+  // .block__title,
+  // .omnipedia-founder-message {
+  //   @supports (background-size: contain) {
+  //     @include media('>=omnipedia-founder-block-photo-inline') {
+  //       @include root-conditions(('[dir=ltr]'), 'html') {
+  //         margin-left:  $founder-photo-inline-max-width;
+  //       }
+  //       @include root-conditions(('[dir=rtl]'), 'html') {
+  //         margin-right: $founder-photo-inline-max-width;
+  //       }
+  //     }
+  //   }
+  // }
+}

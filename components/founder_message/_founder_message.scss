@@ -1,0 +1,50 @@
+// -----------------------------------------------------------------------------
+//   Omnipedia founder message partial
+// -----------------------------------------------------------------------------
+
+@include add-breakpoints((
+  // The viewport width at which we take the founder photo from being placed at
+  // the end of the block to being placed beside the content, i.e. 'standalone'
+  // to 'inline'.
+  'omnipedia-founder-block-photo-inline': 70em
+));
+
+///
+/// The founder block padding.
+///
+/// This is the same as main page cards.
+///
+$founder-block-padding: $general-spacing * 1.5;
+
+///
+/// Founder block minimum height.
+///
+/// We need a minimum height to avoid the founder photo getting too small.
+///
+$founder-block-min-height: 15em;
+
+///
+/// Founder photo URL.
+///
+$founder-photo-url: 'founder_message_headshot.webp?v=1';
+
+///
+/// Founder photo URL for browsers that don't support WebP.
+///
+$founder-photo-url-fallback: 'founder_message_headshot.png?v=3';
+
+///
+/// Founder photo maximum width when inline, i.e. beside content.
+///
+/// This affects the size of the photo on both axes as it'll be constrained to
+/// fit inside of this, respecting the photo's aspect ratio.
+///
+$founder-photo-inline-max-width: 15em;
+
+///
+/// Founder photo height when standalone.
+///
+/// This affects the size of the photo on both axes as it'll be constrained to
+/// fit inside of this, respecting the photo's aspect ratio.
+///
+$founder-photo-standalone-height: 20em;
