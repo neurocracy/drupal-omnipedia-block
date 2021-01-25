@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Omnipedia site header.
+ *
+ * Available variables:
+ *
+ * - 'current_date': The current date content.
+ *
+ * - 'search_form': The search form. This can be empty, i.e. on pages where it
+ *   would not make sense such as on search pages, which have their own search
+ *   fields.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% set base_class = 'omnipedia-header' %}
+
+{# Current date BEM class. #}
+{% set current_date = current_date|merge({
+  '#attributes': current_date['#attributes'].addClass([
+    base_class ~ '__current-date',
+  ])
+}) %}
+
+{% if search_form %}
+  {# Search form BEM class. #}
+  {% set search_form = search_form|merge({
+    '#attributes': search_form['#attributes'].addClass([
+      base_class ~ '__search-form',
+    ])
+  }) %}
+{% endif %}
+
+<div{{ create_attribute({'class': [base_class]}) }}>
+  {{ current_date }}
+
+  {% if search_form %}
+    {{ search_form }}
+  {% endif %}
+</div>
