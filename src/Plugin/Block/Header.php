@@ -2,11 +2,13 @@
 
 namespace Drupal\omnipedia_block\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\TimelineInterface;
@@ -146,7 +148,11 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
         // This gets cached permanently, varying by the storage-formatted date,
         // i.e. different cache context for each date, and by whether the
         // current route is a wiki search page.
-        'contexts'    => ['omnipedia_dates', 'omnipedia_is_wiki_search_page'],
+        'contexts'    => [
+          'omnipedia_dates',
+          'omnipedia_is_wiki_search_page',
+          'user.permissions',
+        ],
         'tags'        => [
           'omnipedia_dates:' . $this->timeline
             ->getDateFormatted('current', 'storage')
@@ -206,13 +212,29 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       ->renderExposedForm(true);
   }
 
+ /**
+   * {@inheritdoc}
+   *
+   * We're using the 'access content' permission to determine if the user can
+   * view this block for convenience, rather than creating a new permission.
+   * In most cases, whether this block is shown should go hand-in-hand with
+   * content being publicly accessible or not, so this keeps things simple.
+   */
+  public function access(AccountInterface $account, $returnAsObject = false) {
+    return AccessResult::allowedIfHasPermission($account, 'access content');
+  }
+
   /**
    * {@inheritdoc}
    */
   public function getCacheContexts() {
     return Cache::mergeContexts(
       parent::getCacheContexts(),
-      ['omnipedia_dates', 'omnipedia_is_wiki_search_page']
+      [
+        'omnipedia_dates',
+        'omnipedia_is_wiki_search_page',
+        'user.permissions',
+      ]
     );
   }
 
