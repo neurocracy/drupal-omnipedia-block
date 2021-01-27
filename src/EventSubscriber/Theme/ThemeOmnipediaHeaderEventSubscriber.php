@@ -50,6 +50,7 @@ class ThemeOmnipediaHeaderEventSubscriber implements EventSubscriberInterface {
     $event->addNewTheme('omnipedia_header', [
       'variables' => [
         'current_date'  => [],
+        'menu_link'     => [],
         'search_form'   => [],
       ],
       'template'  => 'omnipedia-header',

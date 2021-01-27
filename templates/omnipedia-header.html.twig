@@ -7,6 +7,8 @@
  *
  * - 'current_date': The current date content.
  *
+ * - 'menu_link': In-page link to the menu block.
+ *
  * - 'search_form': The search form. This can be empty, i.e. on pages where it
  *   would not make sense such as on search pages, which have their own search
  *   fields.
@@ -24,6 +26,14 @@
   ])
 }) %}
 
+{# Menu link BEM class. Note that this must be an array rather than an Attribute
+   object or else \Drupal\Core\Render\Element\Link::preRenderLink() will cause a
+   fatal error (invalid operand type) when it tries to merge this into
+   $element['#options']['attributes']. #}
+{% set menu_link = menu_link|merge_recursive({
+  '#attributes': {'class': [base_class ~ '__menu-link']}
+}) %}
+
 {% if search_form %}
   {# Search form BEM class. #}
   {% set search_form = search_form|merge({
@@ -35,6 +45,8 @@
 
 <div{{ create_attribute({'class': [base_class]}) }}>
   {{ current_date }}
+
+  {{ menu_link }}
 
   {% if search_form %}
     {{ search_form }}

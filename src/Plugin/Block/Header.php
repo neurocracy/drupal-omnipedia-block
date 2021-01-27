@@ -8,6 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\TimelineInterface;
 use Drupal\omnipedia_search\Service\WikiSearchInterface;
 use Drupal\views\ViewExecutableFactory;
@@ -128,6 +129,16 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
           ]),
           '#value'        => $this->timeline
             ->getDateFormatted('current', 'long'),
+        ],
+
+        '#menu_link'  => [
+          '#type'       => 'link',
+          '#title'      => $this->t('Menu'),
+          '#url'        => Url::fromUserInput('#block-omnipedia-site-main-menu'),
+          // Must be an array and not an Attribute object.
+          //
+          // @see omnipedia-header.html.twig
+          '#attributes' => [],
         ],
       ],
 
