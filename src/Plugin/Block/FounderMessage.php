@@ -62,6 +62,13 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
   /**
    * {@inheritdoc}
    */
+  public function getMachineNameSuggestion() {
+    return 'founder_message';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $formState) {
     /** @var array */
     $form = parent::blockForm($form, $formState);
@@ -144,15 +151,12 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(
-      parent::getCacheContexts(),
-      [
-        // Vary by whether the current route is a main page.
-        'omnipedia_is_wiki_main_page',
-        // Vary by user permissions.
-        'user.permissions'
-      ]
-    );
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      // Vary by whether the current route is a main page.
+      'omnipedia_is_wiki_main_page',
+      // Vary by user permissions.
+      'user.permissions',
+    ]);
   }
 
   /**
@@ -172,13 +176,6 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
       // pages, this block may need to be rebuilt.
       $this->wikiNodeMainPage->getMainPagesCacheTags()
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getMachineNameSuggestion() {
-    return 'founder_message';
   }
 
 }

@@ -143,22 +143,6 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
           '#attributes' => [],
         ],
       ],
-
-      '#cache'      => [
-        // This gets cached permanently, varying by the storage-formatted date,
-        // i.e. different cache context for each date, and by whether the
-        // current route is a wiki search page.
-        'contexts'    => [
-          'omnipedia_dates',
-          'omnipedia_is_wiki_search_page',
-          'user.permissions',
-        ],
-        'tags'        => [
-          'omnipedia_dates:' . $this->timeline
-            ->getDateFormatted('current', 'storage')
-        ],
-        'max-age'     => Cache::PERMANENT,
-      ],
     ];
 
     /** @var array */
@@ -228,14 +212,27 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(
-      parent::getCacheContexts(),
-      [
-        'omnipedia_dates',
-        'omnipedia_is_wiki_search_page',
-        'user.permissions',
-      ]
-    );
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      'omnipedia_dates',
+      'omnipedia_is_wiki_search_page',
+      'user.permissions',
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    return Cache::PERMANENT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    return Cache::mergeTags(parent::getCacheTags(), [
+      'omnipedia_dates:' . $this->timeline->getDateFormatted('current', 'storage'),
+    ]);
   }
 
 }

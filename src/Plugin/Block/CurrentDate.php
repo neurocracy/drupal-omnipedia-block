@@ -2,10 +2,12 @@
 
 namespace Drupal\omnipedia_block\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\omnipedia_core\Service\TimelineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -82,27 +84,46 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
         ],
         '#value'        => $this->timeline->getDateFormatted('current', 'long'),
       ],
-      '#cache'      => [
-        // This gets cached permanently, varying by the storage-formatted date,
-        // i.e. different cache context for each date.
-        'contexts'    => ['omnipedia_dates'],
-        'tags'        => [
-          'omnipedia_dates:' . $this->timeline
-            ->getDateFormatted('current', 'storage')
-        ],
-        'max-age'     => Cache::PERMANENT,
-      ],
     ];
+  }
+
+ /**
+   * {@inheritdoc}
+   *
+   * We're using the 'access content' permission to determine if the user can
+   * view this block for convenience, rather than creating a new permission.
+   * In most cases, whether this block is shown should go hand-in-hand with
+   * content being publicly accessible or not, so this keeps things simple.
+   */
+  public function access(AccountInterface $account, $returnAsObject = false) {
+    return AccessResult::allowedIfHasPermission($account, 'access content');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(
-      parent::getCacheContexts(),
-      ['omnipedia_dates']
-    );
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      // This varies by the storage-formatted date, i.e. different for each
+      // date.
+      'omnipedia_dates',
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    return Cache::PERMANENT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    return Cache::mergeTags(parent::getCacheTags(), [
+      'omnipedia_dates:' . $this->timeline->getDateFormatted('current', 'storage'),
+    ]);
   }
 
 }

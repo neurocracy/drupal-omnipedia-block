@@ -124,64 +124,78 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
   }
 
   /**
+   * Get all revisions of the current route's wiki node, if one is found.
+   *
+   * @return array
+   *   An array of node revision data. If the current route does not contain a
+   *   wiki node as a parameter, this will be an empty array.
+   *
+   * @see \Drupal\omnipedia_core\Service\WikiNodeRevisionInterface::getWikiNodeRevisions()
+   *   Describes the returned array structure. Note that we add an 'access' key
+   *   to each entry to indicate if the current user has access to the node.
+   */
+  protected function getWikiNodeRevisions(): array {
+    /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
+    $node = $this->currentRouteMatch->getParameter('node');
+
+    if (!$this->wikiNodeResolver->isWikiNode($node)) {
+      return [];
+    }
+
+    // Data for this wiki node and its revisions.
+    /** @var array */
+    $nodeRevisions = $node->getWikiNodeRevisions();
+
+    foreach ($nodeRevisions as &$nodeRevision) {
+      // Add an 'access' key with the access result for whether this user role
+      // can access this node..
+      $nodeRevision['access'] = $this->accessManager->checkNamedRoute(
+        'entity.node.canonical',
+        ['node' => $nodeRevision['nid']]
+      );
+    }
+
+    return $nodeRevisions;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() {
     /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
     $node = $this->currentRouteMatch->getParameter('node');
 
-    // This contains the render array for the block.
-    /** @var array */
-    $renderArray = [
-      '#cache' => [
-        'contexts'  => ['omnipedia_wiki_node', 'user.permissions'],
-        'max-age'   => Cache::PERMANENT,
-      ],
-    ];
-
-    // Return the render array with just cache metadata if the current route
-    // doesn't contain a wiki node as a parameter.
+    // Return an empty render array if the current route doesn't contain a wiki
+    // node as a parameter.
     if (!$this->wikiNodeResolver->isWikiNode($node)) {
-      return $renderArray;
+      return [];
     }
+
+    // Data for this wiki node and its revisions, if the current route contains
+    // a wiki node parameter.
+    /** @var array */
+    $nodeRevisions = $this->getWikiNodeRevisions();
 
     // The base class for the revision list.
     /** @var string */
     $listClass = 'omnipedia-wiki-page-revisions';
 
-    $renderArray['revision_list'] = [
-      '#theme'      => 'item_list',
-      '#list_type'  => 'ol',
-      '#items'      => [],
-      '#attributes' => [
-        'class'       => [$listClass],
-      ],
+    // This contains the render array for the block.
+    /** @var array */
+    $renderArray = [
+      'revision_list' => [
+        '#theme'        => 'item_list',
+        '#list_type'    => 'ol',
+        '#items'        => [],
+        '#attributes'   => [
+          'class'         => [$listClass],
+        ],
+      ]
     ];
 
-    // Data for this wiki node and its revisions.
-    /** @var array */
-    $nodeRevisions = $node->getWikiNodeRevisions();
-
     foreach ($nodeRevisions as $nodeRevision) {
-      // The route to check access to and link to.
-      /** @var string */
-      $routeName = 'entity.node.canonical';
-
-      // The route parameters to check access to and link to.
-      /** @var array */
-      $routeParameters = ['node' => $nodeRevision['nid']];
-
-      // Add a cache tag for this node so that this is invalidated if/when the
-      // node changes. Note that this still needs to be added even if the user
-      // does not have access to this for when/if access is granted so that the
-      // block cache is correctly invalidated and rebuilt.
-      $renderArray['#cache']['tags'][] = 'node:' . $nodeRevision['nid'];
-
-      // Check if the user has access to this node and skip displaying it if
-      // not.
-      if (
-        !$this->accessManager->checkNamedRoute($routeName, $routeParameters)
-      ) {
+      // Skip displaying this revision if the user doesn't have access to it.
+      if ($nodeRevision['access'] === false) {
         continue;
       }
 
@@ -248,7 +262,9 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       // If this isn't the current node, output a link.
       } else {
         $item['#type']  = 'link';
-        $item['#url']   = Url::fromRoute($routeName, $routeParameters);
+        $item['#url']   = Url::fromRoute(
+          'entity.node.canonical', ['node' => $nodeRevision['nid']]
+        );
         $item['#title'] = $itemContent;
       }
 
@@ -262,10 +278,42 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(
-      parent::getCacheContexts(),
-      ['omnipedia_wiki_node', 'user.permissions']
-    );
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      // Note that we don't need to vary by the date, as each date is a
+      // different wiki node which is handled by this context.
+      'omnipedia_wiki_node',
+      'user.permissions',
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    return Cache::PERMANENT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // Data for this wiki node and its revisions, if the current route contains
+    // a wiki node parameter.
+    /** @var array */
+    $nodeRevisions = $this->getWikiNodeRevisions();
+
+    /** @var array */
+    $tags = [];
+
+    // Add a cache tag for every node revision so that this block is invalidated
+    // if/when the node changes. Note that these are added even if the user does
+    // not have access to the node for when/if access is granted so that the
+    // block cache is correctly invalidated and rebuilt.
+    foreach ($nodeRevisions as $nodeRevision) {
+      $tags[] = 'node:' . $nodeRevision['nid'];
+    }
+
+    return Cache::mergeTags(parent::getCacheTags(), $tags);
   }
 
 }
