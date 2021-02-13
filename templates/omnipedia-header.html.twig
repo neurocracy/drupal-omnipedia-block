@@ -46,7 +46,9 @@
 <div{{ create_attribute({'class': [base_class]}) }}>
   {{ current_date }}
 
-  {{ menu_link }}
+  <div{{ create_attribute({'class': [base_class ~ '__menu']}) }}>
+    {{ menu_link }}
+  </div>
 
   {% if search_form %}
     {{ search_form }}
