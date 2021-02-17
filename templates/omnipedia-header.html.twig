@@ -43,7 +43,10 @@
   }) %}
 {% endif %}
 
-<div{{ create_attribute({'class': [base_class]}) }}>
+<div{{ create_attribute({'class': [
+  base_class,
+  base_class ~ (search_form ? '--has-search' : '--no-search'),
+]}) }}>
   {{ current_date }}
 
   <div{{ create_attribute({'class': [base_class ~ '__menu']}) }}>
