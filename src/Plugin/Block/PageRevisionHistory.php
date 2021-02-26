@@ -303,7 +303,12 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $nodeRevisions = $this->getWikiNodeRevisions();
 
     /** @var array */
-    $tags = [];
+    $tags = [
+      // This ensures that this block's cache is invalidated whenever the
+      // Permissions by Term cache is invalidated, which occurs when a user's
+      // content permissions change.
+      'permissions_by_term:access_result_cache',
+    ];
 
     // Add a cache tag for every node revision so that this block is invalidated
     // if/when the node changes. Note that these are added even if the user does
