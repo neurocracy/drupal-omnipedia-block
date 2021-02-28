@@ -176,6 +176,11 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     /** @var array */
     $nodeRevisions = $this->getWikiNodeRevisions();
 
+    // Whether we're currently in the changes view.
+    /** @var bool */
+    $inChangesView = ($this->currentRouteMatch->getRouteName() ===
+      'entity.node.omnipedia_changes');
+
     // The base class for the revision list.
     /** @var string */
     $listClass = 'omnipedia-wiki-page-revisions';
@@ -262,13 +267,70 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       // If this isn't the current node, output a link.
       } else {
         $item['#type']  = 'link';
-        $item['#url']   = Url::fromRoute(
-          'entity.node.canonical', ['node' => $nodeRevision['nid']]
-        );
         $item['#title'] = $itemContent;
+
+        // If we're in changes view and access is granted to view both this
+        // revision its previous revision, output a link to that changes view.
+        // Note that the controller for the changes view also denies access if
+        // there is no previous revision, so that's handled for us.
+        if ($inChangesView && $this->accessManager->checkNamedRoute(
+          'entity.node.omnipedia_changes',
+          ['node' => $nodeRevision['nid']]
+        )) {
+          $item['#url'] = Url::fromRoute('entity.node.omnipedia_changes', [
+            'node' => $nodeRevision['nid'],
+          ]);
+
+        // Otherwise, just output a link to this revision's canonical node
+        // route.
+        } else {
+          $item['#url'] = Url::fromRoute('entity.node.canonical', [
+            'node' => $nodeRevision['nid'],
+          ]);
+        }
       }
 
       $renderArray['revision_list']['#items'][] = $item;
+    }
+
+    // If we're currently in the changes view, output a link to exit changes
+    // view; this points to the canonical node route for the current node.
+    if ($inChangesView) {
+      $changesUrl = Url::fromRoute('entity.node.canonical', [
+        'node' => (int) $node->nid->getString(),
+      ]);
+
+      $renderArray['changes_toggle'] = [
+        '#type'       => 'link',
+        '#url'        => $changesUrl,
+        '#title'      => $this->t('Exit changes view'),
+        '#attributes' => [
+          'title' => $this->t(
+            'Stop displaying changes between this page and its previous revision.'
+          ),
+        ],
+      ];
+
+    // If we're not current in changes view, and access is granted to the
+    // changes view for this node, output a link to the changes view.
+    } else if ($this->accessManager->checkNamedRoute(
+      'entity.node.omnipedia_changes',
+      ['node' => (int) $node->nid->getString()]
+    )) {
+      $changesUrl = Url::fromRoute('entity.node.omnipedia_changes', [
+        'node' => (int) $node->nid->getString(),
+      ]);
+
+      $renderArray['changes_toggle'] = [
+        '#type'       => 'link',
+        '#url'        => $changesUrl,
+        '#title'      => $this->t('View changes'),
+        '#attributes' => [
+          'title' => $this->t(
+            'View changes between this page and its previous revision.'
+          ),
+        ],
+      ];
     }
 
     return $renderArray;
@@ -282,6 +344,9 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       // Note that we don't need to vary by the date, as each date is a
       // different wiki node which is handled by this context.
       'omnipedia_wiki_node',
+      // Vary by route, i.e. between 'entity.node.canonical' and
+      // 'entity.node.omnipedia_changes'.
+      'route',
       'user.permissions',
     ]);
   }
