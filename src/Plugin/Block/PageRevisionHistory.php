@@ -135,8 +135,13 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    *   to each entry to indicate if the current user has access to the node.
    */
   protected function getWikiNodeRevisions(): array {
+    // If there's a 'node' route parameter, attempt to resolve it to a wiki
+    // node. Note that the 'node' parameter is not upcast into a Node object if
+    // viewing a (Drupal) revision other than the currently published one.
     /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
-    $node = $this->currentRouteMatch->getParameter('node');
+    $node = $this->wikiNodeResolver->resolveNode(
+      $this->currentRouteMatch->getParameter('node')
+    );
 
     if (!$this->wikiNodeResolver->isWikiNode($node)) {
       return [];
@@ -162,8 +167,13 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * {@inheritdoc}
    */
   public function build() {
+    // If there's a 'node' route parameter, attempt to resolve it to a wiki
+    // node. Note that the 'node' parameter is not upcast into a Node object if
+    // viewing a (Drupal) revision other than the currently published one.
     /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
-    $node = $this->currentRouteMatch->getParameter('node');
+    $node = $this->wikiNodeResolver->resolveNode(
+      $this->currentRouteMatch->getParameter('node')
+    );
 
     // Return an empty render array if the current route doesn't contain a wiki
     // node as a parameter.
