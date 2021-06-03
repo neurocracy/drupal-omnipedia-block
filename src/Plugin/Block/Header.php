@@ -12,6 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\TimelineInterface;
+use Drupal\omnipedia_core\Service\WikiNodeAccessInterface;
 use Drupal\omnipedia_search\Service\WikiSearchInterface;
 use Drupal\views\ViewExecutableFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,6 +52,13 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
   protected $timeline;
 
   /**
+   * The Omnipedia wiki node access service.
+   *
+   * @var \Drupal\omnipedia_core\Service\WikiNodeAccessInterface
+   */
+  protected $wikiNodeAccess;
+
+  /**
    * The Omnipedia wiki search service.
    *
    * @var \Drupal\omnipedia_search\Service\WikiSearchInterface
@@ -69,6 +77,9 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    * @param \Drupal\omnipedia_core\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
    *
+   * @param \Drupal\omnipedia_core\Service\WikiNodeAccessInterface $wikiNodeAccess
+   *   The Omnipedia wiki node access service.
+   *
    * @param \Drupal\omnipedia_search\Service\WikiSearchInterface $wikiSearch
    *   The Omnipedia wiki search service.
    */
@@ -77,6 +88,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     TimelineInterface       $timeline,
     EntityStorageInterface  $viewsEntityStorage,
     ViewExecutableFactory   $viewsExecutableFactory,
+    WikiNodeAccessInterface   $wikiNodeAccess,
     WikiSearchInterface     $wikiSearch
   ) {
     parent::__construct($configuration, $pluginID, $pluginDefinition);
@@ -85,6 +97,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     $this->timeline               = $timeline;
     $this->viewsEntityStorage     = $viewsEntityStorage;
     $this->viewsExecutableFactory = $viewsExecutableFactory;
+    $this->wikiNodeAccess         = $wikiNodeAccess;
     $this->wikiSearch             = $wikiSearch;
   }
 
@@ -100,6 +113,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       $container->get('omnipedia.timeline'),
       $container->get('entity_type.manager')->getStorage('view'),
       $container->get('views.executable'),
+      $container->get('omnipedia.wiki_node_access'),
       $container->get('omnipedia.wiki_search')
     );
   }
@@ -199,13 +213,12 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
  /**
    * {@inheritdoc}
    *
-   * We're using the 'access content' permission to determine if the user can
-   * view this block for convenience, rather than creating a new permission.
-   * In most cases, whether this block is shown should go hand-in-hand with
-   * content being publicly accessible or not, so this keeps things simple.
+   * @todo Can/should we vary this per wiki date?
    */
   public function access(AccountInterface $account, $returnAsObject = false) {
-    return AccessResult::allowedIfHasPermission($account, 'access content');
+    return AccessResult::allowedIf(
+      $this->wikiNodeAccess->canUserAccessAnyWikiNode($account)
+    )->cachePerUser();
   }
 
   /**
