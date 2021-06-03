@@ -229,6 +229,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       'omnipedia_dates',
       'omnipedia_is_wiki_search_page',
       'user.permissions',
+      'user.node_grants:view',
     ]);
   }
 

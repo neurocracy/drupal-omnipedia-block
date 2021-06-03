@@ -358,6 +358,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       // 'entity.node.omnipedia_changes'.
       'route',
       'user.permissions',
+      'user.node_grants:view',
     ]);
   }
 
