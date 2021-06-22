@@ -44,10 +44,6 @@
       background-position:  bottom left;
       background-size:      contain;
 
-      // Just in case this overlays the text by accident, disable pointer
-      // events so the text underneath is selectable by pointer.
-      pointer-events: none;
-
       @include media('>=omnipedia-founder-block-photo-inline') {
         position: absolute;
 
