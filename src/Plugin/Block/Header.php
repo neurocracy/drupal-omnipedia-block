@@ -150,7 +150,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
         '#menu_link'  => [
           '#type'       => 'link',
           '#title'      => $this->t('Menu'),
-          '#url'        => Url::fromUserInput('#block-omnipedia-site-main-menu'),
+          '#url'        => Url::fromUserInput('#menu'),
           // Must be an array and not an Attribute object.
           //
           // @see omnipedia-header.html.twig
