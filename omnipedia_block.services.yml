@@ -1,5 +1,11 @@
 services:
 
+  # Our logger channel.
+  logger.channel.omnipedia_block:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['omnipedia_block']
+
   # Event subscriber to add cache contexts and tags to the
   # 'system_branding_block' block.
   omnipedia_block.block_system_branding_block_date_cache_event_subscriber:
