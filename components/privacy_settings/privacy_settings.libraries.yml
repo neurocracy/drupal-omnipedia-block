@@ -1,0 +1,6 @@
+component.privacy_settings:
+  css:
+    component:
+      privacy_settings.css: {}
+  js:
+    privacy_settings.js: {}
