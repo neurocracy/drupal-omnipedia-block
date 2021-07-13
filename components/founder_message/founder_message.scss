@@ -39,7 +39,10 @@
       grid-area: photo;
 
       background-image:     url($founder-photo-url-fallback);
-      background-image:     url($founder-photo-url);
+      background-image:     url($founder-photo-url-1x);
+      @media (min-resolution: 1.5x) {
+        background-image:   url($founder-photo-url-2x);
+      }
       background-repeat:    no-repeat;
       background-position:  bottom left;
       background-size:      contain;
