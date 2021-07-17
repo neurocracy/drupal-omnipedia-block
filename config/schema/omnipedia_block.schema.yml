@@ -1,0 +1,7 @@
+block.settings.omnipedia_founder_message:
+  type: block_settings
+  label: 'Omnipedia: Founder message block instance configuration'
+  mapping:
+    body:
+      type: text_format
+      label: 'Body'
