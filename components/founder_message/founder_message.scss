@@ -5,7 +5,8 @@
 @import '../../../../ambientimpact/ambientimpact_core/stylesheets/_common.scss';
 @import '../../../_components.scss';
 
-.block-omnipedia-founder-message {
+.block-omnipedia-founder-message,
+.block-omnipedia-founder-message-join {
   position: relative;
 
   // Set a min-height so that the founder photo has enough space to not get too

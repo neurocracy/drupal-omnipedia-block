@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Omnipedia founder message - join variant.
+ *
+ * Available variables:
+ *
+ * - 'body': The body content.
+ *
+ * - 'join_label': The configured join label.
+ *
+ * - 'join_url': The join Url object.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{{ attach_library('omnipedia_block/component.founder_message') }}
+
+{% set base_class = 'omnipedia-founder-message' %}
+
+<div{{ create_attribute({'class': [
+  base_class,
+  base_class ~ '--join',
+]}) }}>
+
+  <div{{ create_attribute({'class': [
+    base_class ~ '__body',
+  ]}) }}>{{ body }}</div>
+
+  <div{{ create_attribute({'class': [
+    base_class ~ '__join',
+  ]}) }}>{{
+    link(join_label, join_url, {'class': [base_class ~ '__join-link']})
+  }}</div>
+
+</div>

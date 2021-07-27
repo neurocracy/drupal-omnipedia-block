@@ -5,3 +5,14 @@ block.settings.omnipedia_founder_message:
     body:
       type: text_format
       label: 'Body'
+
+block.settings.omnipedia_founder_message_join:
+  type: block_settings
+  label: 'Omnipedia: Founder message join block instance configuration'
+  mapping:
+    body:
+      type: text_format
+      label: 'Body'
+    join_label:
+      type: label
+      label: 'Join link text'

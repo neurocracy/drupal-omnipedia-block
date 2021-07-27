@@ -41,23 +41,41 @@ class ThemeOmnipediaFounderMessageEventSubscriber implements EventSubscriberInte
   }
 
   /**
-   * Defines the Omnipedia founder message theme element.
+   * Defines the Omnipedia founder message theme elements.
    *
    * @param \Drupal\core_event_dispatcher\Event\Theme\ThemeEvent $event
    *   The event object.
    */
   public function onTheme(ThemeEvent $event): void {
-    $event->addNewTheme('omnipedia_founder_message', [
-      'variables' => [
-        'body'  => '',
+
+    foreach ([
+      'omnipedia_founder_message' => [
+        'variables' => [
+          'body'  => '',
+        ],
+        'template'  => 'omnipedia-founder-message',
       ],
-      'template'  => 'omnipedia-founder-message',
-      // Path is required.
-      //
-      // @see https://www.drupal.org/project/hook_event_dispatcher/issues/3038311
-      'path'      => $this->moduleHandler
-        ->getModule('omnipedia_block')->getPath() . '/templates',
-    ]);
+      'omnipedia_founder_message_join' => [
+        'variables' => [
+          'body'        => '',
+          'join_label'  => '',
+          'join_url'    => '',
+        ],
+        'template'  => 'omnipedia-founder-message-join',
+      ],
+    ] as $key => $data) {
+
+      $event->addNewTheme($key, $data + [
+        // Path is required.
+        //
+        // @see https://www.drupal.org/project/hook_event_dispatcher/issues/3038311
+        'path' => $this->moduleHandler->getModule(
+          'omnipedia_block'
+        )->getPath() . '/templates',
+      ]);
+
+    }
+
   }
 
 }
