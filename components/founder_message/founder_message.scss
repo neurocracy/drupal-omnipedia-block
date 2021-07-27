@@ -23,8 +23,6 @@
     // border.
     overflow: hidden;
 
-    // @include contain-floats;
-
     &::after {
       content: '';
 
@@ -87,17 +85,4 @@
     grid-area: content;
   }
 
-  // .block__title,
-  // .omnipedia-founder-message {
-  //   @supports (background-size: contain) {
-  //     @include media('>=omnipedia-founder-block-photo-inline') {
-  //       @include root-conditions(('[dir=ltr]'), 'html') {
-  //         margin-left:  $founder-photo-inline-max-width;
-  //       }
-  //       @include root-conditions(('[dir=rtl]'), 'html') {
-  //         margin-right: $founder-photo-inline-max-width;
-  //       }
-  //     }
-  //   }
-  // }
 }
