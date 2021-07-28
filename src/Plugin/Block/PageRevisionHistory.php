@@ -343,6 +343,33 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       ];
     }
 
+    // Provide a link to the build route for users that have access to it.
+    if ($this->accessManager->checkNamedRoute(
+      'entity.node.omnipedia_changes.build',
+      ['node' => (int) $node->nid->getString()]
+    )) {
+
+      $renderArray['changes_build'] = [
+        '#type' => 'html_tag',
+        '#tag'  => 'div',
+        '#attributes' => ['class' => 'omnipedia-wiki-page-revisions-build'],
+
+        'link'  => [
+          '#type'       => 'link',
+          '#url'        => Url::fromRoute('entity.node.omnipedia_changes.build', [
+            'node' => (int) $node->nid->getString(),
+          ]),
+          '#title'      => $this->t('Build changes'),
+          '#attributes' => [
+            'title' => $this->t(
+              'Build or rebuild the changes between this page and its previous revision for the current user.'
+            ),
+          ],
+        ],
+      ];
+
+    }
+
     return $renderArray;
   }
 
