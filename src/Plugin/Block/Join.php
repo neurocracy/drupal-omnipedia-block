@@ -7,7 +7,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
+use Drupal\omnipedia_commerce\Service\ContentAccessProductInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,6 +30,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
+   * The Omnipedia content access product service.
+   *
+   * @var \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface
+   */
+  protected $contentAccessProduct;
+
+  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -39,17 +46,22 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
   /**
    * {@inheritdoc}
    *
+   * @param \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface $contentAccessProduct
+   *   The Omnipedia content access product service.
+   *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current user.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
+    ContentAccessProductInterface $contentAccessProduct,
     AccountInterface $currentUser
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
 
     // Save dependencies.
-    $this->currentUser = $currentUser;
+    $this->contentAccessProduct = $contentAccessProduct;
+    $this->currentUser          = $currentUser;
   }
 
   /**
@@ -61,6 +73,7 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
+      $container->get('omnipedia_commerce.content_access_product'),
       $container->get('current_user')
     );
   }
@@ -77,7 +90,18 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
    */
   public function build() {
 
-    if ($this->currentUser->isAuthenticated()) {
+    /** @var \Drupal\commerce_product\Entity\ProductInterface|null */
+    $product = $this->contentAccessProduct->getBaseProduct();
+
+    // Don't render anything if the base product has not been configured.
+    if (!\is_object($product)) {
+      return [];
+    }
+
+    if (
+      $this->currentUser->isAuthenticated() ||
+      !$product->access('view', $this->currentUser)
+    ) {
       return [];
     }
 
@@ -90,7 +114,7 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
         'link'  => [
           '#type'       => 'link',
           '#title'      => $this->t('Join Omnipedia'),
-          '#url'        => Url::fromUserInput('/join'),
+          '#url'        => $product->toUrl(),
           '#attributes' => ['class' => ['join-omnipedia__link']],
         ],
       ],
