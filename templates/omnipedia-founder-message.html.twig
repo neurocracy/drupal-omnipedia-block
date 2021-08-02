@@ -15,4 +15,8 @@
 
 {% set base_class = 'omnipedia-founder-message' %}
 
-<div{{ create_attribute({'class': [base_class]}) }}>{{ body }}</div>
+<div{{ create_attribute({'class': [base_class]}) }}>
+  <div{{ create_attribute({'class': [
+    base_class ~ '__body',
+  ]}) }}>{{ body }}</div>
+</div>
