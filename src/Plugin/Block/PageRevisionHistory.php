@@ -191,20 +191,26 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $inChangesView = ($this->currentRouteMatch->getRouteName() ===
       'entity.node.omnipedia_changes');
 
-    // The base class for the revision list.
-    /** @var string */
-    $listClass = 'omnipedia-wiki-page-revisions';
+    /** @var string The base class.*/
+    $baseClass = 'omnipedia-wiki-page-revisions';
+
+    /** @var string The class for the revision list. */
+    $listClass = $baseClass . '__list';
+
+    /** @var string The class for the revision list items. */
+    $listItemClass = $listClass . '-item';
 
     // This contains the render array for the block.
     /** @var array */
     $renderArray = [
       'revision_list' => [
-        '#theme'        => 'item_list',
-        '#list_type'    => 'ol',
-        '#items'        => [],
-        '#attributes'   => [
-          'class'         => [$listClass],
-        ],
+        '#theme'              => 'item_list',
+        '#list_type'          => 'ol',
+        '#items'              => [],
+        // This is applied to the item list container.
+        '#wrapper_attributes' => ['class' => [$baseClass]],
+        // This is applied to the actual list (<ol> element).
+        '#attributes'         => ['class' => [$listClass]],
       ]
     ];
 
@@ -220,7 +226,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
         // content, not the list item itself, but #wrapper_attributes applies
         // attributes to the list item itself.
         '#wrapper_attributes' => [
-          'class' => [$listClass . '__item'],
+          'class' => [$listItemClass],
         ],
       ];
 
@@ -231,7 +237,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
           '#type'         => 'html_tag',
           '#tag'          => 'time',
           '#attributes'   => [
-            'class'         => [$listClass . '__item-date'],
+            'class'         => [$listItemClass . '-date'],
             'datetime'      => $this->timeline->getDateFormatted(
               $nodeRevision['date'], 'html'
             ),
@@ -249,7 +255,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
           '#tag'    => 'br',
           '#value'  => '',
           '#attributes' => [
-            'class'       => [$listClass . '__item-break'],
+            'class'       => [$listItemClass . '-break'],
           ],
         ];
         // The unpublished indicator.
@@ -258,12 +264,12 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
           '#tag'    => 'em',
           '#value'  => $this->t('(unpublished)'),
           '#attributes' => [
-            'class'       => [$listClass . '__item-status'],
+            'class'       => [$listItemClass . '-status'],
           ],
         ];
 
         $item['#wrapper_attributes']['class'][] =
-          $listClass . '__item--unpublished';
+          $listItemClass . '--unpublished';
       }
 
       // Is this the current route's node? If so, only output the content
@@ -271,8 +277,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       if ($nodeRevision['nid'] === (int) $node->nid->getString()) {
         $item = NestedArray::mergeDeep($item, $itemContent);
 
-        $item['#wrapper_attributes']['class'][] =
-          $listClass . '__item--current';
+        $item['#wrapper_attributes']['class'][] = $listItemClass . '--current';
 
       // If this isn't the current node, output a link.
       } else {
