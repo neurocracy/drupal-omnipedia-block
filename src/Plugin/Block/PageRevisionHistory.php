@@ -316,13 +316,19 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       ]);
 
       $renderArray['changes_toggle'] = [
-        '#type'       => 'link',
-        '#url'        => $changesUrl,
-        '#title'      => $this->t('Exit changes view'),
-        '#attributes' => [
-          'title' => $this->t(
-            'Stop displaying changes between this page and its previous revision.'
-          ),
+        '#type' => 'html_tag',
+        '#tag'  => 'div',
+        '#attributes' => ['class' => 'omnipedia-wiki-page-revisions-toggle'],
+
+        'link'  => [
+          '#type'       => 'link',
+          '#url'        => $changesUrl,
+          '#title'      => $this->t('Exit changes view'),
+          '#attributes' => [
+            'title' => $this->t(
+              'Stop displaying changes between this page and its previous revision.'
+            ),
+          ],
         ],
       ];
 
@@ -337,15 +343,22 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       ]);
 
       $renderArray['changes_toggle'] = [
-        '#type'       => 'link',
-        '#url'        => $changesUrl,
-        '#title'      => $this->t('View changes'),
-        '#attributes' => [
-          'title' => $this->t(
-            'View changes between this page and its previous revision.'
-          ),
+        '#type' => 'html_tag',
+        '#tag'  => 'div',
+        '#attributes' => ['class' => 'omnipedia-wiki-page-revisions-toggle'],
+
+        'link'  => [
+          '#type'       => 'link',
+          '#url'        => $changesUrl,
+          '#title'      => $this->t('View changes'),
+          '#attributes' => [
+            'title' => $this->t(
+              'View changes between this page and its previous revision.'
+            ),
+          ],
         ],
       ];
+
     }
 
     // Provide a link to the build route for users that have access to it.
