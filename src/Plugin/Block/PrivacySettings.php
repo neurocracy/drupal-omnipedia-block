@@ -7,7 +7,6 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -177,8 +176,7 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
       empty($privacySettingsTitle)
     ) {
 
-      $this->loggerChannel->log(
-        RfcLogLevel::ERROR,
+      $this->loggerChannel->error(
         'One or more of the required configuration items from the EU Cookie Compliance module returned an empty value:<pre>$privacyPolicyUrl = @privacyPolicyUrl</pre><pre>$privacyPolicyTitle = @privacyPolicyTitle</pre><pre>$privacySettingsTitle = @privacySettingsTitle</pre>',
         [
           '@privacyPolicyUrl'     => \print_r($privacyPolicyUrl, true),
