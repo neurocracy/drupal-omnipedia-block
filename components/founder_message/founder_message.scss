@@ -13,7 +13,7 @@
 
   // Set a min-height so that the founder photo has enough space to not get too
   // small vertically and horizontally.
-  min-height: founder-message.$founder-block-min-height;
+  min-height: founder-message.$block-min-height;
 
   box-sizing: border-box;
 
@@ -31,18 +31,18 @@
 
       position: relative;
 
-      bottom: founder-message.$founder-block-padding * -1;
+      bottom: founder-message.$block-padding * -1;
 
       display: block;
 
-      height: founder-message.$founder-photo-standalone-height;
+      height: founder-message.$photo-standalone-height;
 
       grid-area: photo;
 
-      background-image:     url(founder-message.$founder-photo-url-fallback);
-      background-image:     url(founder-message.$founder-photo-url-1x);
+      background-image:     url(founder-message.$photo-url-fallback);
+      background-image:     url(founder-message.$photo-url-1x);
       @media (min-resolution: 1.5x) {
-        background-image:   url(founder-message.$founder-photo-url-2x);
+        background-image:   url(founder-message.$photo-url-2x);
       }
       background-repeat:    no-repeat;
       background-position:  bottom left;
@@ -61,7 +61,7 @@
         // Compensates for rounding errors in Chrome at certain zoom levels.
         top:    -1px;
 
-        width:  founder-message.$founder-photo-inline-max-width;
+        width:  founder-message.$photo-inline-max-width;
         height: auto;
       }
     }
@@ -75,7 +75,7 @@
         grid-template-areas:
           'photo title'
           'photo content';
-        grid-template-columns:  founder-message.$founder-photo-inline-max-width 1fr;
+        grid-template-columns:  founder-message.$photo-inline-max-width 1fr;
         grid-template-rows:     min-content 1fr;
       }
     }

@@ -17,29 +17,29 @@
 ///
 /// This is the same as main page cards.
 ///
-$founder-block-padding: general.$general-spacing * 1.5;
+$block-padding: general.$general-spacing * 1.5;
 
 ///
 /// Founder block minimum height.
 ///
 /// We need a minimum height to avoid the founder photo getting too small.
 ///
-$founder-block-min-height: 15em;
+$block-min-height: 15em;
 
 ///
 /// Founder photo URL on 1x density.
 ///
-$founder-photo-url-1x: 'founder_message_portait_1x.webp?v=3';
+$photo-url-1x: 'founder_message_portait_1x.webp?v=3';
 
 ///
 /// Founder photo URL on 2x density.
 ///
-$founder-photo-url-2x: 'founder_message_portait_2x.webp?v=3';
+$photo-url-2x: 'founder_message_portait_2x.webp?v=3';
 
 ///
 /// Founder photo URL for browsers that don't support WebP.
 ///
-$founder-photo-url-fallback: 'founder_message_portait_1x.png?v=3';
+$photo-url-fallback: 'founder_message_portait_1x.png?v=3';
 
 ///
 /// Founder photo maximum width when inline, i.e. beside content.
@@ -47,7 +47,7 @@ $founder-photo-url-fallback: 'founder_message_portait_1x.png?v=3';
 /// This affects the size of the photo on both axes as it'll be constrained to
 /// fit inside of this, respecting the photo's aspect ratio.
 ///
-$founder-photo-inline-max-width: 15em;
+$photo-inline-max-width: 15em;
 
 ///
 /// Founder photo height when standalone.
@@ -55,4 +55,4 @@ $founder-photo-inline-max-width: 15em;
 /// This affects the size of the photo on both axes as it'll be constrained to
 /// fit inside of this, respecting the photo's aspect ratio.
 ///
-$founder-photo-standalone-height: 20em;
+$photo-standalone-height: 20em;
