@@ -2,7 +2,10 @@
 //   Omnipedia founder message partial
 // -----------------------------------------------------------------------------
 
-@include add-breakpoints((
+@use 'sass/helpers/breakpoint';
+@use 'sass/variables/general';
+
+@include breakpoint.add((
   // The viewport width at which we take the founder photo from being placed at
   // the end of the block to being placed beside the content, i.e. 'standalone'
   // to 'inline'.
@@ -14,7 +17,7 @@
 ///
 /// This is the same as main page cards.
 ///
-$founder-block-padding: $general-spacing * 1.5;
+$founder-block-padding: general.$general-spacing * 1.5;
 
 ///
 /// Founder block minimum height.

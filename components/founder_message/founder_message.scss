@@ -2,8 +2,10 @@
 //   Omnipedia founder message stylesheet
 // -----------------------------------------------------------------------------
 
-@import '../../../../ambientimpact/ambientimpact_core/stylesheets/_common.scss';
-@import '../../../_components.scss';
+@use '_founder_message' as founder-message;
+@use 'sass/helpers/breakpoint';
+@use 'sass/helpers/layout';
+@use 'sass/helpers/selector';
 
 .block-omnipedia-founder-message,
 .block-omnipedia-founder-message-join {
@@ -11,7 +13,7 @@
 
   // Set a min-height so that the founder photo has enough space to not get too
   // small vertically and horizontally.
-  min-height: $founder-block-min-height;
+  min-height: founder-message.$founder-block-min-height;
 
   box-sizing: border-box;
 
@@ -29,51 +31,51 @@
 
       position: relative;
 
-      bottom: -$founder-block-padding;
+      bottom: founder-message.$founder-block-padding * -1;
 
       display: block;
 
-      height: $founder-photo-standalone-height;
+      height: founder-message.$founder-photo-standalone-height;
 
       grid-area: photo;
 
-      background-image:     url($founder-photo-url-fallback);
-      background-image:     url($founder-photo-url-1x);
+      background-image:     url(founder-message.$founder-photo-url-fallback);
+      background-image:     url(founder-message.$founder-photo-url-1x);
       @media (min-resolution: 1.5x) {
-        background-image:   url($founder-photo-url-2x);
+        background-image:   url(founder-message.$founder-photo-url-2x);
       }
       background-repeat:    no-repeat;
       background-position:  bottom left;
       background-size:      contain;
 
-      @include media('>=omnipedia-founder-block-photo-inline') {
+      @include breakpoint.on('>=omnipedia-founder-block-photo-inline') {
         position: absolute;
 
-        @include root-conditions(('[dir=ltr]'), 'html') {
+        @include selector.root-conditions(('[dir=ltr]'), 'html') {
           left: 0;
         }
-        @include root-conditions(('[dir=rtl]'), 'html') {
+        @include selector.root-conditions(('[dir=rtl]'), 'html') {
           right: 0;
         }
 
         // Compensates for rounding errors in Chrome at certain zoom levels.
         top:    -1px;
 
-        width:  $founder-photo-inline-max-width;
+        width:  founder-message.$founder-photo-inline-max-width;
         height: auto;
       }
     }
   }
 
   @supports (background-size: contain) {
-    @include media('>=omnipedia-founder-block-photo-inline') {
-      @include use-grid {
+    @include breakpoint.on('>=omnipedia-founder-block-photo-inline') {
+      @include layout.use-grid {
         display: grid;
 
         grid-template-areas:
           'photo title'
           'photo content';
-        grid-template-columns:  $founder-photo-inline-max-width 1fr;
+        grid-template-columns:  founder-message.$founder-photo-inline-max-width 1fr;
         grid-template-rows:     min-content 1fr;
       }
     }
