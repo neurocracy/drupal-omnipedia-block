@@ -8,7 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -47,9 +47,9 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
   protected $configFactory;
 
   /**
-   * The current user.
+   * The current user proxy service.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
@@ -66,8 +66,8 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Drupal configuration object factory service.
    *
-   * @param \Drupal\Core\Session\AccountInterface $currentUser
-   *   The current user.
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The current user proxy service.
    *
    * @param \Psr\Log\LoggerInterface $loggerChannel
    *   Our logger channel.
@@ -75,7 +75,7 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     ConfigFactoryInterface  $configFactory,
-    AccountInterface        $currentUser,
+    AccountProxyInterface   $currentUser,
     LoggerInterface         $loggerChannel
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);

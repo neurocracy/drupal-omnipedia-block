@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\omnipedia_commerce\Service\ContentAccessProductInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,9 +37,9 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
   protected $contentAccessProduct;
 
   /**
-   * The current user.
+   * The current user proxy service.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
@@ -49,13 +49,13 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
    * @param \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface $contentAccessProduct
    *   The Omnipedia content access product service.
    *
-   * @param \Drupal\Core\Session\AccountInterface $currentUser
-   *   The current user.
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The current user proxy service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     ContentAccessProductInterface $contentAccessProduct,
-    AccountInterface $currentUser
+    AccountProxyInterface         $currentUser
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
 
