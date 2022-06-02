@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Adds cache contexts and tags to the 'system_branding_block' block.
  *
- * @see omnipedia_site_preprocess_block__system_branding_block()
+ * @see \omnipedia_site_theme_preprocess_block__system_branding_block()
  *   Requires these changes to cache contexts and tags but cannot do so as
  *   preprocess functions are too late in the rendering process.
  */
