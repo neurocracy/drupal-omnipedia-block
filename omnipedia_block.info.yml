@@ -7,10 +7,10 @@ core_version_requirement: ^9
 dependencies:
   - drupal:views
   - omnipedia_access:omnipedia_access
+  - omnipedia_changes:omnipedia_changes
   - omnipedia_core:omnipedia_core
   - omnipedia_commerce:omnipedia_commerce
   - omnipedia_content:omnipedia_content
-  - omnipedia_content_changes:omnipedia_content_changes
   - omnipedia_search:omnipedia_search
   - ambientimpact_core:ambientimpact_core
   - hook_event_dispatcher:core_event_dispatcher
