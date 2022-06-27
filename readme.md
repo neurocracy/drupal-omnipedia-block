@@ -21,3 +21,7 @@ part of this codebase is useful or will inspire someone out there.
 * [Drupal 9](https://www.drupal.org/download) ([Drupal 8 is end-of-life](https://www.drupal.org/psa-2021-11-30))
 
 * [Composer](https://getcomposer.org/)
+
+## Drupal dependencies
+
+* The [```ambientimpact_core``` module](https://github.com/Ambient-Impact/drupal-modules) must be present.
