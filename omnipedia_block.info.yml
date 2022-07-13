@@ -5,6 +5,7 @@ package: Omnipedia
 core_version_requirement: ^9
 
 dependencies:
+  - drupal:path_alias
   - drupal:views
   - omnipedia_access:omnipedia_access
   - omnipedia_changes:omnipedia_changes

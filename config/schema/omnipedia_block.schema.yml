@@ -16,3 +16,6 @@ block.settings.omnipedia_founder_message_join:
     join_label:
       type: label
       label: 'Join link text'
+    join_url:
+      type: path
+      label: 'Join link path'
