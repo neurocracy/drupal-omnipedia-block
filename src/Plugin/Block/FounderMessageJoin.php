@@ -219,11 +219,15 @@ class FounderMessageJoin extends FounderMessage {
    */
   public function build() {
 
+    /** @var array */
+    $config = $this->getConfiguration();
+
     /** @var \Drupal\commerce_product\Entity\ProductInterface|null */
     $product = $this->contentAccessProduct->getBaseProduct();
 
-    // Don't render anything if the base product has not been configured.
-    if (!\is_object($product)) {
+    // Don't render anything if the join URL has not been set and the base
+    // product has not been configured.
+    if (empty($config['join_url']) && !\is_object($product)) {
       return [];
     }
 
@@ -233,9 +237,6 @@ class FounderMessageJoin extends FounderMessage {
     if (empty($renderArray)) {
       return $renderArray;
     }
-
-    /** @var array */
-    $config = $this->getConfiguration();
 
     $renderArray['#theme'] = 'omnipedia_founder_message_join';
 
