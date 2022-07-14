@@ -3,8 +3,6 @@
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Path\PathValidatorInterface;
-use Drupal\Core\Routing\RequestContext;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
 use Drupal\omnipedia_commerce\Service\ContentAccessProductInterface;
@@ -38,20 +36,6 @@ class FounderMessageJoin extends FounderMessage {
   protected AliasManagerInterface $pathAliasManager;
 
   /**
-   * The Drupal path validator.
-   *
-   * @var \Drupal\Core\Path\PathValidatorInterface
-   */
-  protected PathValidatorInterface $pathValidator;
-
-  /**
-   * The Drupal request context.
-   *
-   * @var \Drupal\Core\Routing\RequestContext
-   */
-  protected RequestContext $requestContext;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface $contentAccessProduct
@@ -62,17 +46,12 @@ class FounderMessageJoin extends FounderMessage {
    *
    * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
    *   The Drupal path validator.
-   *
-   * @param \Drupal\Core\Routing\RequestContext $requestContext
-   *   The Drupal request context.
    */
   public function __construct(
     array $configuration, string $pluginID, array $pluginDefinition,
     WikiNodeMainPageInterface     $wikiNodeMainPage,
     ContentAccessProductInterface $contentAccessProduct,
-    AliasManagerInterface         $pathAliasManager,
-    PathValidatorInterface        $pathValidator,
-    RequestContext                $requestContext
+    AliasManagerInterface         $pathAliasManager
   ) {
 
     parent::__construct(
@@ -81,8 +60,6 @@ class FounderMessageJoin extends FounderMessage {
 
     $this->contentAccessProduct = $contentAccessProduct;
     $this->pathAliasManager     = $pathAliasManager;
-    $this->pathValidator        = $pathValidator;
-    $this->requestContext       = $requestContext;
 
   }
 
@@ -97,18 +74,41 @@ class FounderMessageJoin extends FounderMessage {
       $configuration, $pluginID, $pluginDefinition,
       $container->get('omnipedia.wiki_node_main_page'),
       $container->get('omnipedia_commerce.content_access_product'),
-      $container->get('path_alias.manager'),
-      $container->get('path.validator'),
-      $container->get('router.request_context')
+      $container->get('path_alias.manager')
     );
   }
-
 
   /**
    * {@inheritdoc}
    */
   public function getMachineNameSuggestion() {
     return 'founder_message_join';
+  }
+
+  /**
+   * Build a Url object given an internal path or external URL.
+   *
+   * @param string $pathOrUrl
+   *   An internal path or external URL.
+   *
+   * @return \Drupal\Core\Url
+   */
+  protected function buildUrlObject(string $pathOrUrl): Url {
+
+    try {
+
+      /** @var \Drupal\Core\Url */
+      $url = Url::fromUserInput($pathOrUrl);
+
+    } catch (\Exception $exception) {
+
+      /** @var \Drupal\Core\Url */
+      $url = Url::fromUri($pathOrUrl);
+
+    }
+
+    return $url;
+
   }
 
   /**
@@ -137,15 +137,27 @@ class FounderMessageJoin extends FounderMessage {
     /** @var array */
     $form['join_url'] = [
       '#type'           => 'textfield',
-      '#title'          => $this->t('Join link path'),
+      '#title'          => $this->t('Join link URL'),
       '#default_value'  => '',
-      '#description'    => $this->t('A relative path to use as the join link path.'),
-      '#field_prefix'   => $this->requestContext->getCompleteBaseUrl(),
+      '#description'    => $this->t('The URL to use as the join link. This can be a relative path to an internal page or an external URL.'),
     ];
 
     if (!empty($config['join_url'])) {
-      $form['join_url']['#default_value'] = $this->pathAliasManager
-        ->getAliasByPath($config['join_url']);
+
+      /** @var \Drupal\Core\Url */
+      $url = $this->buildUrlObject($config['join_url']);
+
+      if (!$url->isExternal()) {
+
+        $form['join_url']['#default_value'] = $this->pathAliasManager
+          ->getAliasByPath($config['join_url']);
+
+      } else {
+
+        $form['join_url']['#default_value'] = $config['join_url'];
+
+      }
+
     }
 
     return $form;
@@ -154,39 +166,24 @@ class FounderMessageJoin extends FounderMessage {
 
   /**
    * {@inheritdoc}
-   *
-   * @see \Drupal\system\Form\SiteInformationForm::validateForm()
-   *   Join URL path validation adapted from this.
    */
   public function blockValidate($form, FormStateInterface $formState) {
 
-    // Convert an aliased path to its unaliased form if available.
-    //
-    // @todo Figure out why this doesn't seem to work here in blockValidate()
-    //   but does in Drupal\Core\Form\FormInterface::validateForm()
-    //
-    // @see \Drupal\system\Form\SiteInformationForm::validateForm()
-    // $formState->setValueForElement(
-    //   $form['join_url'],
-    //   $this->pathAliasManager->getPathByAlias($formState->getValue('join_url'))
-    // );
+    if (!empty($formState->getValue('join_url'))) {
 
-    $joinUrlValue = $formState->getValue('join_url');
+      try {
 
-    if (!empty($joinUrlValue) && $joinUrlValue[0] !== '/') {
+        $url = $this->buildUrlObject($formState->getValue('join_url'));
 
-      $formState->setErrorByName('join_url', $this->t(
-        "The path '%path' has to start with a slash.",
-        ['%path' => $formState->getValue('join_url')]
-      ));
+      } catch (\Exception $exception) {
 
-    }
+        $formState->setErrorByName('join_url', $this->t(
+          "The value '%url' does not appear to be a valid interal path or external URL, or you do not have access to it.",
+          ['%url' => $formState->getValue('join_url')]
+        ));
 
-    if (!$this->pathValidator->isValid($formState->getValue('join_url'))) {
-      $formState->setErrorByName('join_url', $this->t(
-        "Either the path '%path' is invalid or you do not have access to it.",
-        ['%path' => $formState->getValue('join_url')]
-      ));
+      }
+
     }
 
     parent::blockValidate($form, $formState);
@@ -204,7 +201,11 @@ class FounderMessageJoin extends FounderMessage {
       'join_label', $formState->getValue('join_label')
     );
 
-    // @see self::blockValidate()
+    // Converting an alias to internal path would preferably be done in the
+    // validation method but that doesn't seem to work for blockValidate() as
+    // updating the form state doesn't register for some reason.
+    //
+    // @see \Drupal\system\Form\SiteInformationForm::validateForm()
     $this->setConfigurationValue(
       'join_url', $this->pathAliasManager->getPathByAlias(
         $formState->getValue('join_url')
@@ -241,7 +242,7 @@ class FounderMessageJoin extends FounderMessage {
     if (!empty($config['join_url'])) {
 
       /** @var \Drupal\Core\Url */
-      $renderArray['#join_url'] = Url::fromUserInput($config['join_url']);
+      $renderArray['#join_url'] = $this->buildUrlObject($config['join_url']);
 
     } else {
 
