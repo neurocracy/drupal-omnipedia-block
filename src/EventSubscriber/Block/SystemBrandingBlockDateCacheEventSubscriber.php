@@ -74,27 +74,23 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
     /** @var array */
     $build = &$event->getBuild();
 
-    // Vary by the Omnipedia date and user cache contexts. The user context
-    // allows us to vary per user and not have to know exactly how access is to
-    // be granted to any main page linked in this block, i.e. whether it's by
-    // role or something else.
+    // Vary by the Omnipedia date, user permissions, and user node grants cache
+    // contexts.
     //
-    // @todo Can this be changed to vary per group of users that have access to
-    //   a given main page?
-    //
-    // @see https://git.drupalcode.org/project/permissions_by_term/-/blob/3.0.x-dev/src/Cache/AccessResultCache.php
-    //   When we start using this module, we can use these tags and contexts.
+    // @todo Can most or all of these be fetched from the loaded main page for
+    //   the current date?
     $build['#cache']['contexts'] = Cache::mergeContexts(
       $build['#cache']['contexts'],
-      ['omnipedia_dates', 'user']
+      ['omnipedia_dates', 'user.permissions', 'user.node_grants:view']
     );
 
+    // Add the current date cache tag, cache tags from all main pages, and the
+    // Permissions by Term access result cache tag.
     foreach ([
-      // Current date cache tag.
       ['omnipedia_dates:' . $this->timeline
         ->getDateFormatted('current', 'storage')],
-      // Cache tags for all main pages and relevant data.
       $this->wikiNodeMainPage->getMainPagesCacheTags(),
+      ['permissions_by_term:access_result_cache'],
     ] as $tags) {
       $build['#cache']['tags'] = Cache::mergeTags(
         $build['#cache']['tags'],
