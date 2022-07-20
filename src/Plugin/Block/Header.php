@@ -218,7 +218,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
   public function access(AccountInterface $account, $returnAsObject = false) {
     return AccessResult::allowedIf(
       $this->wikiNodeAccess->canUserAccessAnyWikiNode($account)
-    )->cachePerUser();
+    );
   }
 
   /**
