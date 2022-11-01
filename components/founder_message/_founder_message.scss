@@ -29,15 +29,26 @@ $block-min-height: 15em;
 ///
 /// Founder photo URL on 1x density.
 ///
-$photo-url-1x: 'founder_message_portait_1x.webp?v=3';
+/// @link https://webpack.js.org/plugins/image-minimizer-webpack-plugin/#advanced-setup
+///   The 'as=webp' instructs ImageMinimizerWebpackPlugin to convert this to a
+///   WebP image.
+///
+$photo-url-1x: 'founder_message_portait_1x.png?as=webp&v=3';
 
 ///
 /// Founder photo URL on 2x density.
 ///
-$photo-url-2x: 'founder_message_portait_2x.webp?v=3';
+/// @link https://webpack.js.org/plugins/image-minimizer-webpack-plugin/#advanced-setup
+///   The 'as=webp' instructs ImageMinimizerWebpackPlugin to convert this to a
+///   WebP image.
+///
+$photo-url-2x: 'founder_message_portait_2x.png?as=webp&v=3';
 
 ///
 /// Founder photo URL for browsers that don't support WebP.
+///
+/// @todo Can this be rolled into the build process so we don't have to specify
+///   it here?
 ///
 $photo-url-fallback: 'founder_message_portait_1x.png?v=3';
 

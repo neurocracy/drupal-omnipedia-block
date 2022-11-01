@@ -3,6 +3,7 @@
 const autoprefixer = require('autoprefixer');
 const componentPaths = require('ambientimpact-drupal-modules/componentPaths');
 const glob = require('glob');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
@@ -95,7 +96,7 @@ module.exports = {
     // Asset bundling/copying disabled for now.
     //
     // @see https://stackoverflow.com/questions/68737296/disable-asset-bundling-in-webpack-5#68768905
-    assetModuleFilename: '[file]',
+    assetModuleFilename: '[file][query]',
 
   },
 
@@ -136,16 +137,36 @@ module.exports = {
           },
         ],
       },
-     // {
-     //    test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
-     //    type: 'asset/resource',
-     //    // Asset bundling/copying disabled for now.
-     //    //
-     //    // @see https://stackoverflow.com/questions/68737296/disable-asset-bundling-in-webpack-5#68768905
-     //    generator: {
-     //      emit: false,
-     //    },
-     //  },
+      {
+        test: /\.(jpe?g|png)$/i,
+        loader: ImageMinimizerPlugin.loader,
+        enforce: 'pre',
+        options: {
+          generator: [
+            {
+              preset: 'webp',
+              implementation: ImageMinimizerPlugin.sharpGenerate,
+              options: {
+                plugins: ['sharp-webp'],
+                encodeOptions: {
+                  webp: {
+                    quality: 80,
+                  },
+                },
+              },
+              // Annoyingly, file URLs that are altered (e.g. PNG to WebP) by
+              // this loader appear to incorrectly generate paths using the
+              // platform's path separator. This means that if built on Windows,
+              // the URLs will use a backslash (\), which is not a path
+              // separator in an HTTP URL but rather an escape character,
+              // meaning that the URL will be incorrect and a 404.
+              filename: function(file) {
+                return file.filename.replaceAll('\\', '/');
+              },
+            },
+          ],
+        },
+      },
     ],
-  }
+  },
 };
