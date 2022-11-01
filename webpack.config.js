@@ -130,9 +130,6 @@ module.exports = {
             options: {
               sourceMap: isDev,
               sassOptions: {
-                importer: [
-                  baseThemeImporter,
-                ],
                 includePaths: componentPaths().all,
               }
             },
