@@ -12,6 +12,7 @@
     "glob": "^8.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss": "^8.2.15",
+    "postcss-loader": "^7.0.1",
     "sass": "^1.43.4",
     "sass-loader": "^13.1.0",
     "webpack": "^5.74.0",
