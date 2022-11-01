@@ -1,4 +1,0 @@
-founder_message_webp_1x:
-  command: 'magick convert components/founder_message/founder_message_portait_1x.png -quality 80 components/founder_message/founder_message_portait_1x.webp'
-founder_message_webp_2x:
-  command: 'magick convert components/founder_message/founder_message_portait_2x.png -quality 80 components/founder_message/founder_message_portait_2x.webp'
