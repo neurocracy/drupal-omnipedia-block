@@ -93,9 +93,13 @@ module.exports = {
     // temporary directory by default.
     filename: 'temp/[name].js',
 
-    // Asset bundling/copying disabled for now.
+    // Assets are left at their original locations and not hashed. The [query]
+    // must be left in to ensure any query string specified in the CSS is
+    // preserved.
     //
     // @see https://stackoverflow.com/questions/68737296/disable-asset-bundling-in-webpack-5#68768905
+    //
+    // @see https://github.com/webpack-contrib/css-loader/issues/889#issuecomment-1298907914
     assetModuleFilename: '[file][query]',
 
   },
