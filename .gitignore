@@ -7,7 +7,3 @@ node_modules
 
 entrypoints.json
 manifest.json
-
-# These are generated via Grunt and ImageMagick.
-components/founder_message/founder_message_portait_1x.webp
-components/founder_message/founder_message_portait_2x.webp
