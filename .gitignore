@@ -2,5 +2,6 @@
 **/*.css
 **/*.css.map
 
+# Webpack Encore generated files.
 entrypoints.json
 manifest.json
