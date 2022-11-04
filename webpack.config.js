@@ -88,6 +88,11 @@ Encore
 
 })
 .addEntries(getGlobbedEntries())
+
+// Clean out any previously built files in case of source files being removed or
+// renamed.
+.cleanupOutputBeforeBuild(['**/*.css', '**/*.css.map'])
+
 .enableSourceMaps(!Encore.isProduction())
 
 // We don't use Babel so we can probably just remove all presets to speed it up.
