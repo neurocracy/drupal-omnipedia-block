@@ -57,16 +57,35 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
 .setOutputPath(path.resolve(__dirname, (outputToSourcePaths ? '.' : distPath)))
+
 // Encore will complain if the public path doesn't start with a slash.
 // Unfortunately, it doesn't seem Webpack's automatic public path works here.
 //
 // @see https://webpack.js.org/guides/public-path/#automatic-publicpath
 .setPublicPath('/')
 .setManifestKeyPrefix('')
+
+// We output multiple files.
 .disableSingleRuntimeChunk()
+
 .configureFilenames({
-  js:     'temp/[name].js',
+
+  // Since Webpack started out primarily for building JavaScript applications,
+  // it always outputs a JS files, even if empty. We place these in a temporary
+  // directory by default. Note that the 'webpack-remove-empty-scripts' plug-in
+  // should prevent these being output, but if there's an error while running
+  // Webpack, you'll get a nice 'temp' directory you can just delete.
+  js: 'temp/[name].js',
+
+  // Assets are left at their original locations and not hashed. The [query]
+  // must be left in to ensure any query string specified in the CSS is
+  // preserved.
+  //
+  // @see https://stackoverflow.com/questions/68737296/disable-asset-bundling-in-webpack-5#68768905
+  //
+  // @see https://github.com/webpack-contrib/css-loader/issues/889#issuecomment-1298907914
   assets: '[file][query]',
+
 })
 .addEntries(getGlobbedEntries())
 .enableSourceMaps(!Encore.isProduction())
@@ -77,7 +96,11 @@ Encore
 .configureBabel(function(config) {
   config.presets = [];
 })
+
+// Remove any empty scripts Webpack would generate as we aren't a primarily
+// JavaScript-based app and only output CSS and assets.
 .addPlugin(new RemoveEmptyScriptsPlugin())
+
 .enableSassLoader(function(options) {
   options.sassOptions = {includePaths: componentPaths().all};
 })
@@ -94,8 +117,20 @@ Encore
 .configureMiniCssExtractPlugin(function(config) {
   config.publicPath = 'auto';
 })
+
 // Disable the Encore image rule because we provide our own loader config.
 .configureImageRule({enabled: false})
+// This converts JPEG and/or PNG images to WebP format. Note that this only gets
+// applied to JPEG/PNG CSS url()s *if* they point to the original JPG/PNG images
+// and have a query string with 'as=webp'. For example:
+//
+// some_background_image.png?as=webp&v=3
+//
+// ...will be found by this plug-in and the CSS will be transformed to:
+//
+// some_background_image.webp?v=3
+//
+// ...along with generating the WebP image.
 .addLoader({
   test: /\.(jpe?g|png)$/i,
   loader: ImageMinimizerPlugin.loader,
