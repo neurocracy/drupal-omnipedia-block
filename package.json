@@ -1,6 +1,6 @@
 {
   "name": "drupal-omnipedia-block",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "license": "GPL-2.0",
   "repository": "github:neurocracy/drupal-omnipedia-block",
   "scripts": {
@@ -33,6 +33,6 @@
     "webpack-remove-empty-scripts": "^1.0.1"
   },
   "dependencies": {
-    "ambientimpact-drupal-modules": "workspace:^5"
+    "ambientimpact-drupal-modules": "workspace:^6"
   }
 }

@@ -56,7 +56,7 @@ Then, in your root ```composer.json```, add the following to the
 ```
 
 Then, in your project's root, run ```composer require
-"drupal/omnipedia_block:3.x-dev@dev"``` to have Composer install the module
+"drupal/omnipedia_block:4.x-dev@dev"``` to have Composer install the module
 and its required dependencies for you.
 
 ## Front-end assets
@@ -80,7 +80,7 @@ Once those are defined, add the following to the `"dependencies"` section of
 your top-level `package.json`:
 
 ```json
-"drupal-omnipedia-block": "workspace:^3"
+"drupal-omnipedia-block": "workspace:^4"
 ```
 
 Then run `yarn install` and let Yarn do the rest.
@@ -128,3 +128,11 @@ from the root of your Drupal site. If you want to build just this package, run:
 ```
 yarn workspace drupal-omnipedia-block run build
 ```
+
+----
+
+# Major breaking changes
+
+The following major version bumps indicate breaking changes:
+
+* 4.x - Front-end package manager is now [Yarn](https://yarnpkg.com/); front-end build process ported to [Webpack](https://webpack.js.org/).
