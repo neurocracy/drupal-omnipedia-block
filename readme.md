@@ -24,7 +24,25 @@ part of this codebase is useful or will inspire someone out there.
 
 ## Drupal dependencies
 
-* The [`ambientimpact_core` module](https://github.com/Ambient-Impact/drupal-modules) must be present.
+Follow the Composer installation instructions for these dependencies first:
+
+* The [`ambientimpact_core` module](https://github.com/Ambient-Impact/drupal-modules).
+
+* The following Omnipedia modules:
+
+  * `omnipedia_access` (not currently open source)
+
+  * [`omnipedia_changes`](https://github.com/neurocracy/drupal-omnipedia-changes)
+
+  * `omnipedia_commerce` (not currently open source)
+
+  * [`omnipedia_content`](https://github.com/neurocracy/drupal-omnipedia-content)
+
+  * [`omnipedia_core`](https://github.com/neurocracy/drupal-omnipedia-core)
+
+  * [`omnipedia_date`](https://github.com/neurocracy/drupal-omnipedia-date)
+
+  * [`omnipedia_search`](https://github.com/neurocracy/drupal-omnipedia-search)
 
 ## Front-end dependencies
 
