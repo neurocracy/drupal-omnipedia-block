@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Component\Utility\NestedArray;

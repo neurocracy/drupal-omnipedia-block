@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\omnipedia_block\EventSubscriber\Theme;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
