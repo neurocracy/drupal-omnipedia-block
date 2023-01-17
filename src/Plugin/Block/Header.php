@@ -93,14 +93,15 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     WikiNodeAccessInterface   $wikiNodeAccess,
     WikiSearchInterface     $wikiSearch
   ) {
+
     parent::__construct($configuration, $pluginID, $pluginDefinition);
 
-    // Save dependencies.
     $this->timeline               = $timeline;
     $this->viewsEntityStorage     = $viewsEntityStorage;
     $this->viewsExecutableFactory = $viewsExecutableFactory;
     $this->wikiNodeAccess         = $wikiNodeAccess;
     $this->wikiSearch             = $wikiSearch;
+
   }
 
   /**
@@ -131,6 +132,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    * {@inheritdoc}
    */
   public function build() {
+
     $renderArray = [
       'header'  => [
         '#theme'  => 'omnipedia_header',
@@ -176,6 +178,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     }
 
     return $renderArray;
+
   }
 
   /**
@@ -189,6 +192,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    *   injection.
    */
   protected function getSearchForm(): array {
+
     // Don't display the search form on the wiki search page as it's redundant.
     if ($this->wikiSearch->isCurrentRouteSearchPage()) {
       return [];
@@ -208,8 +212,10 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     // initialized so that we don't cause any errors when building the form.
     $viewExecutable->build('page');
 
-    return $viewExecutable->getDisplay()->getPlugin('exposed_form')
-      ->renderExposedForm(true);
+    return $viewExecutable->getDisplay()->getPlugin(
+      'exposed_form'
+    )->renderExposedForm(true);
+
   }
 
  /**
@@ -227,12 +233,14 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    * {@inheritdoc}
    */
   public function getCacheContexts() {
+
     return Cache::mergeContexts(parent::getCacheContexts(), [
       'omnipedia_dates',
       'omnipedia_is_wiki_search_page',
       'user.permissions',
       'user.node_grants:view',
     ]);
+
   }
 
   /**
@@ -246,6 +254,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    * {@inheritdoc}
    */
   public function getCacheTags() {
+
     return Cache::mergeTags(parent::getCacheTags(), [
       'omnipedia_dates:' . $this->timeline->getDateFormatted(
         'current', 'storage'
@@ -255,6 +264,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       // content permissions change.
       'permissions_by_term:access_result_cache',
     ]);
+
   }
 
 }

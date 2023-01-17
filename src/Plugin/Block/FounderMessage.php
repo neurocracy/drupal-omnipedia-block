@@ -42,10 +42,11 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
     array $configuration, string $pluginID, array $pluginDefinition,
     WikiNodeMainPageInterface $wikiNodeMainPage
   ) {
+
     parent::__construct($configuration, $pluginID, $pluginDefinition);
 
-    // Save dependencies.
     $this->wikiNodeMainPage = $wikiNodeMainPage;
+
   }
 
   /**
@@ -72,6 +73,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $formState) {
+
     /** @var array */
     $form = parent::blockForm($form, $formState);
 
@@ -95,6 +97,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
     }
 
     return $form;
+
   }
 
   /**
@@ -108,6 +111,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    * {@inheritdoc}
    */
   public function build() {
+
     // If the current route is not a main page, return an empty render array.
     // The getCacheContexts() and getCacheMaxAge() methods handle setting the
     // cache metadata.
@@ -135,6 +139,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
     ];
 
     return $renderArray;
+
   }
 
  /**
@@ -153,12 +158,14 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    * {@inheritdoc}
    */
   public function getCacheContexts() {
+
     return Cache::mergeContexts(parent::getCacheContexts(), [
       // Vary by whether the current route is a main page.
       'omnipedia_is_wiki_main_page',
       // Vary by user permissions.
       'user.permissions',
     ]);
+
   }
 
   /**
@@ -172,12 +179,14 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    * {@inheritdoc}
    */
   public function getCacheTags() {
+
     return Cache::mergeTags(
       parent::getCacheTags(),
       // Add all main page cache tags. If there are any added or removed main
       // pages, this block may need to be rebuilt.
       $this->wikiNodeMainPage->getMainPagesCacheTags()
     );
+
   }
 
 }

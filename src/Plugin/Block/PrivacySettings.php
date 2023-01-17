@@ -80,12 +80,13 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
     AccountProxyInterface   $currentUser,
     LoggerInterface         $loggerChannel
   ) {
+
     parent::__construct($configuration, $pluginId, $pluginDefinition);
 
-    // Save dependencies.
     $this->configFactory  = $configFactory;
     $this->currentUser    = $currentUser;
     $this->loggerChannel  = $loggerChannel;
+
   }
 
   /**

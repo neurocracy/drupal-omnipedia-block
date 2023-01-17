@@ -67,6 +67,7 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
    *   The event object.
    */
   public function blockBuildAlter(BlockBuildAlterEvent $event): void {
+
     if (
       $event->getBlock()->getConfiguration()['id'] !== 'system_branding_block'
     ) {
@@ -94,11 +95,14 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
       $this->wikiNodeMainPage->getMainPagesCacheTags(),
       ['permissions_by_term:access_result_cache'],
     ] as $tags) {
+
       $build['#cache']['tags'] = Cache::mergeTags(
         $build['#cache']['tags'],
         $tags
       );
+
     }
+
   }
 
 }

@@ -80,13 +80,14 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     TimelineInterface           $timeline,
     WikiNodeResolverInterface   $wikiNodeResolver
   ) {
+
     parent::__construct($configuration, $pluginID, $pluginDefinition);
 
-    // Save dependencies.
     $this->accessManager      = $accessManager;
     $this->currentRouteMatch  = $currentRouteMatch;
     $this->timeline           = $timeline;
     $this->wikiNodeResolver   = $wikiNodeResolver;
+
   }
 
   /**
@@ -109,6 +110,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * {@inheritdoc}
    */
   public function label() {
+
     // If a label has been set by the user, defer to that.
     if (!empty($this->configuration['label'])) {
       return $this->configuration['label'];
@@ -116,6 +118,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
 
     // Otherwise we use this.
     return $this->t('Revision history');
+
   }
 
   /**
@@ -137,6 +140,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    *   to each entry to indicate if the current user has access to the node.
    */
   protected function getWikiNodeRevisions(): array {
+
     // If there's a 'node' route parameter, attempt to resolve it to a wiki
     // node. Note that the 'node' parameter is not upcast into a Node object if
     // viewing a (Drupal) revision other than the currently published one.
@@ -154,21 +158,25 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $nodeRevisions = $node->getWikiNodeRevisions();
 
     foreach ($nodeRevisions as &$nodeRevision) {
+
       // Add an 'access' key with the access result for whether this user role
-      // can access this node..
+      // can access this node.
       $nodeRevision['access'] = $this->accessManager->checkNamedRoute(
         'entity.node.canonical',
         ['node' => $nodeRevision['nid']]
       );
+
     }
 
     return $nodeRevisions;
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
+
     // If there's a 'node' route parameter, attempt to resolve it to a wiki
     // node. Note that the 'node' parameter is not upcast into a Node object if
     // viewing a (Drupal) revision other than the currently published one.
@@ -217,6 +225,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     ];
 
     foreach ($nodeRevisions as $nodeRevision) {
+
       // Skip displaying this revision if the user doesn't have access to it.
       if ($nodeRevision['access'] === false) {
         continue;
@@ -251,6 +260,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       ];
 
       if ($nodeRevision['published'] === false) {
+
         // Add a line break between the date and the unpublished indicator.
         $itemContent['break'] = [
           '#type'   => 'html_tag',
@@ -272,17 +282,20 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
 
         $item['#wrapper_attributes']['class'][] =
           $listItemClass . '--unpublished';
+
       }
 
       // Is this the current route's node? If so, only output the content
       // without a link.
       if ($nodeRevision['nid'] === (int) $node->nid->getString()) {
+
         $item = NestedArray::mergeDeep($item, $itemContent);
 
         $item['#wrapper_attributes']['class'][] = $listItemClass . '--current';
 
       // If this isn't the current node, output a link.
       } else {
+
         $item['#type']  = 'link';
         $item['#title'] = $itemContent;
 
@@ -294,6 +307,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
           'entity.node.omnipedia_changes',
           ['node' => $nodeRevision['nid']]
         )) {
+
           $item['#url'] = Url::fromRoute('entity.node.omnipedia_changes', [
             'node' => $nodeRevision['nid'],
           ]);
@@ -301,18 +315,23 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
         // Otherwise, just output a link to this revision's canonical node
         // route.
         } else {
+
           $item['#url'] = Url::fromRoute('entity.node.canonical', [
             'node' => $nodeRevision['nid'],
           ]);
+
         }
+
       }
 
       $renderArray['revision_list']['#items'][] = $item;
+
     }
 
     // If we're currently in the changes view, output a link to exit changes
     // view; this points to the canonical node route for the current node.
     if ($inChangesView) {
+
       $changesUrl = Url::fromRoute('entity.node.canonical', [
         'node' => (int) $node->nid->getString(),
       ]);
@@ -340,6 +359,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       'entity.node.omnipedia_changes',
       ['node' => (int) $node->nid->getString()]
     )) {
+
       $changesUrl = Url::fromRoute('entity.node.omnipedia_changes', [
         'node' => (int) $node->nid->getString(),
       ]);
@@ -391,12 +411,14 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     }
 
     return $renderArray;
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCacheContexts() {
+
     return Cache::mergeContexts(parent::getCacheContexts(), [
       // Note that we don't need to vary by the date, as each date is a
       // different wiki node which is handled by this context.
@@ -407,6 +429,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       'user.permissions',
       'user.node_grants:view',
     ]);
+
   }
 
   /**
@@ -420,6 +443,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    * {@inheritdoc}
    */
   public function getCacheTags() {
+
     // Data for this wiki node and its revisions, if the current route contains
     // a wiki node parameter.
     /** @var array */
@@ -442,6 +466,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     }
 
     return Cache::mergeTags(parent::getCacheTags(), $tags);
+
   }
 
 }

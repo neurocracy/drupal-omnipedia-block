@@ -43,10 +43,11 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
     array $configuration, string $pluginID, array $pluginDefinition,
     TimelineInterface $timeline
   ) {
+
     parent::__construct($configuration, $pluginID, $pluginDefinition);
 
-    // Save dependencies.
     $this->timeline = $timeline;
+
   }
 
   /**
@@ -73,7 +74,9 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
    * {@inheritdoc}
    */
   public function build() {
+
     return [
+
       // This needs to be wrapped in its own key so that #attributes doesn't get
       // removed by the render/block system for some reason.
       'current_date'  => [
@@ -86,7 +89,9 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
         ],
         '#value'        => $this->timeline->getDateFormatted('current', 'long'),
       ],
+
     ];
+
   }
 
  /**

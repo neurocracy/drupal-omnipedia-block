@@ -49,6 +49,7 @@ class ThemeOmnipediaHeaderEventSubscriber implements EventSubscriberInterface {
    *   The event object.
    */
   public function onTheme(ThemeEvent $event): void {
+
     $event->addNewTheme('omnipedia_header', [
       'variables' => [
         'current_date'  => [],
@@ -59,9 +60,11 @@ class ThemeOmnipediaHeaderEventSubscriber implements EventSubscriberInterface {
       // Path is required.
       //
       // @see https://www.drupal.org/project/hook_event_dispatcher/issues/3038311
-      'path'      => $this->moduleHandler
-        ->getModule('omnipedia_block')->getPath() . '/templates',
+      'path'      => $this->moduleHandler->getModule(
+        'omnipedia_block'
+      )->getPath() . '/templates',
     ]);
+
   }
 
 }

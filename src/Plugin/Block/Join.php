@@ -61,7 +61,6 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
 
-    // Save dependencies.
     $this->contentAccessProduct = $contentAccessProduct;
     $this->currentUser          = $currentUser;
   }
@@ -128,10 +127,12 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
    * {@inheritdoc}
    */
   public function getCacheContexts() {
+
     return Cache::mergeContexts(parent::getCacheContexts(), [
       'user.permissions',
       'user.node_grants:view',
     ]);
+
   }
 
   /**
@@ -149,9 +150,11 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
    * content permissions change.
    */
   public function getCacheTags() {
+
     return Cache::mergeTags(parent::getCacheTags(), [
       'permissions_by_term:access_result_cache',
     ]);
+
   }
 
 }
