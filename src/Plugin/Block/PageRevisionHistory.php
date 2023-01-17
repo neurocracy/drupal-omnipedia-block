@@ -74,14 +74,14 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    *   The Omnipedia wiki node resolver service.
    */
   public function __construct(
-    array $configuration, string $pluginID, array $pluginDefinition,
+    array $configuration, string $pluginId, array $pluginDefinition,
     AccessManagerInterface      $accessManager,
     StackedRouteMatchInterface  $currentRouteMatch,
     TimelineInterface           $timeline,
     WikiNodeResolverInterface   $wikiNodeResolver
   ) {
 
-    parent::__construct($configuration, $pluginID, $pluginDefinition);
+    parent::__construct($configuration, $pluginId, $pluginDefinition);
 
     $this->accessManager      = $accessManager;
     $this->currentRouteMatch  = $currentRouteMatch;
@@ -95,10 +95,10 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginID, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition
   ) {
     return new static(
-      $configuration, $pluginID, $pluginDefinition,
+      $configuration, $pluginId, $pluginDefinition,
       $container->get('access_manager'),
       $container->get('current_route_match'),
       $container->get('omnipedia.timeline'),

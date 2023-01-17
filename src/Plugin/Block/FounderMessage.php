@@ -39,11 +39,11 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    *   The Omnipedia wiki node main page service.
    */
   public function __construct(
-    array $configuration, string $pluginID, array $pluginDefinition,
+    array $configuration, string $pluginId, array $pluginDefinition,
     WikiNodeMainPageInterface $wikiNodeMainPage
   ) {
 
-    parent::__construct($configuration, $pluginID, $pluginDefinition);
+    parent::__construct($configuration, $pluginId, $pluginDefinition);
 
     $this->wikiNodeMainPage = $wikiNodeMainPage;
 
@@ -54,10 +54,10 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginID, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition
   ) {
     return new static(
-      $configuration, $pluginID, $pluginDefinition,
+      $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.wiki_node_main_page')
     );
   }

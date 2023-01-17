@@ -40,11 +40,11 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
    *   The Omnipedia timeline service.
    */
   public function __construct(
-    array $configuration, string $pluginID, array $pluginDefinition,
+    array $configuration, string $pluginId, array $pluginDefinition,
     TimelineInterface $timeline
   ) {
 
-    parent::__construct($configuration, $pluginID, $pluginDefinition);
+    parent::__construct($configuration, $pluginId, $pluginDefinition);
 
     $this->timeline = $timeline;
 
@@ -55,10 +55,10 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginID, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition
   ) {
     return new static(
-      $configuration, $pluginID, $pluginDefinition,
+      $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.timeline')
     );
   }

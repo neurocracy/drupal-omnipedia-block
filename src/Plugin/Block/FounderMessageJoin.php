@@ -50,14 +50,14 @@ class FounderMessageJoin extends FounderMessage {
    *   The Drupal path validator.
    */
   public function __construct(
-    array $configuration, string $pluginID, array $pluginDefinition,
+    array $configuration, string $pluginId, array $pluginDefinition,
     WikiNodeMainPageInterface     $wikiNodeMainPage,
     ContentAccessProductInterface $contentAccessProduct,
     AliasManagerInterface         $pathAliasManager
   ) {
 
     parent::__construct(
-      $configuration, $pluginID, $pluginDefinition, $wikiNodeMainPage
+      $configuration, $pluginId, $pluginDefinition, $wikiNodeMainPage
     );
 
     $this->contentAccessProduct = $contentAccessProduct;
@@ -70,10 +70,10 @@ class FounderMessageJoin extends FounderMessage {
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginID, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition
   ) {
     return new static(
-      $configuration, $pluginID, $pluginDefinition,
+      $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.wiki_node_main_page'),
       $container->get('omnipedia_commerce.content_access_product'),
       $container->get('path_alias.manager')

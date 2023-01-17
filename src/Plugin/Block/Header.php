@@ -86,7 +86,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    *   The Omnipedia wiki search service.
    */
   public function __construct(
-    array $configuration, string $pluginID, array $pluginDefinition,
+    array $configuration, string $pluginId, array $pluginDefinition,
     TimelineInterface       $timeline,
     EntityStorageInterface  $viewsEntityStorage,
     ViewExecutableFactory   $viewsExecutableFactory,
@@ -94,7 +94,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     WikiSearchInterface     $wikiSearch
   ) {
 
-    parent::__construct($configuration, $pluginID, $pluginDefinition);
+    parent::__construct($configuration, $pluginId, $pluginDefinition);
 
     $this->timeline               = $timeline;
     $this->viewsEntityStorage     = $viewsEntityStorage;
@@ -109,10 +109,10 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginID, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition
   ) {
     return new static(
-      $configuration, $pluginID, $pluginDefinition,
+      $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.timeline'),
       $container->get('entity_type.manager')->getStorage('view'),
       $container->get('views.executable'),
