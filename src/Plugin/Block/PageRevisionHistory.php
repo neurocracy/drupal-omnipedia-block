@@ -35,28 +35,28 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    *
    * @var \Drupal\Core\Access\AccessManagerInterface
    */
-  protected $accessManager;
+  protected AccessManagerInterface $accessManager;
 
   /**
    * The Drupal current route match service.
    *
    * @var \Drupal\Core\Routing\StackedRouteMatchInterface
    */
-  protected $currentRouteMatch;
+  protected StackedRouteMatchInterface $currentRouteMatch;
 
   /**
    * The Omnipedia timeline service.
    *
    * @var \Drupal\omnipedia_date\Service\TimelineInterface
    */
-  protected $timeline;
+  protected TimelineInterface $timeline;
 
   /**
    * The Omnipedia wiki node resolver service.
    *
    * @var \Drupal\omnipedia_core\Service\WikiNodeResolverInterface
    */
-  protected $wikiNodeResolver;
+  protected WikiNodeResolverInterface $wikiNodeResolver;
 
   /**
    * {@inheritdoc}

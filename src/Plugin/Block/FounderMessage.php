@@ -30,7 +30,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    *
    * @var \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface
    */
-  protected $wikiNodeMainPage;
+  protected WikiNodeMainPageInterface $wikiNodeMainPage;
 
   /**
    * {@inheritdoc}

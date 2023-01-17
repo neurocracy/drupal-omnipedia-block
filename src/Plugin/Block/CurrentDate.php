@@ -31,7 +31,7 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
    *
    * @var \Drupal\omnipedia_date\Service\TimelineInterface
    */
-  protected $timeline;
+  protected TimelineInterface $timeline;
 
   /**
    * {@inheritdoc}

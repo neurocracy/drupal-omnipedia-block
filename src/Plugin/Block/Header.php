@@ -37,35 +37,35 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    *
    * @var \Drupal\views\ViewExecutableFactory
    */
-  protected $viewsExecutableFactory;
+  protected ViewExecutableFactory $viewsExecutableFactory;
 
   /**
    * The Views entity storage.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $viewsStorage;
+  protected EntityStorageInterface $viewsStorage;
 
   /**
    * The Omnipedia timeline service.
    *
    * @var \Drupal\omnipedia_date\Service\TimelineInterface
    */
-  protected $timeline;
+  protected TimelineInterface $timeline;
 
   /**
    * The Omnipedia wiki node access service.
    *
    * @var \Drupal\omnipedia_core\Service\WikiNodeAccessInterface
    */
-  protected $wikiNodeAccess;
+  protected WikiNodeAccessInterface $wikiNodeAccess;
 
   /**
    * The Omnipedia wiki search service.
    *
    * @var \Drupal\omnipedia_search\Service\WikiSearchInterface
    */
-  protected $wikiSearch;
+  protected WikiSearchInterface $wikiSearch;
 
   /**
    * {@inheritdoc}

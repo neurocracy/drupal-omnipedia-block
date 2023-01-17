@@ -28,7 +28,7 @@ class FounderMessageJoin extends FounderMessage {
    *
    * @var \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface
    */
-  protected $contentAccessProduct;
+  protected ContentAccessProductInterface $contentAccessProduct;
 
   /**
    * The Drupal path alias manager.

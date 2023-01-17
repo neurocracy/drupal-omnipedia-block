@@ -46,21 +46,21 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * The current user proxy service.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected $currentUser;
+  protected AccountProxyInterface $currentUser;
 
   /**
    * Our logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $loggerChannel;
+  protected LoggerInterface $loggerChannel;
 
   /**
    * {@inheritdoc}

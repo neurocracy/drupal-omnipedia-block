@@ -19,7 +19,7 @@ class ThemeOmnipediaHeaderEventSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  protected $moduleHandler;
+  protected ModuleHandlerInterface $moduleHandler;
 
   /**
    * Event subscriber constructor; saves dependencies.

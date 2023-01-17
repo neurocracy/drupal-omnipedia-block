@@ -36,14 +36,14 @@ class Join extends BlockBase implements BlockPluginInterface, ContainerFactoryPl
    *
    * @var \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface
    */
-  protected $contentAccessProduct;
+  protected ContentAccessProductInterface $contentAccessProduct;
 
   /**
    * The current user proxy service.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected $currentUser;
+  protected AccountProxyInterface $currentUser;
 
   /**
    * {@inheritdoc}
