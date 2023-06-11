@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\EventSubscriber\Block;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\hook_event_dispatcher\HookEventDispatcherInterface;
+use Drupal\core_event_dispatcher\BlockHookEvents;
 use Drupal\core_event_dispatcher\Event\Block\BlockBuildAlterEvent;
 use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
 use Drupal\omnipedia_date\Service\TimelineInterface;
@@ -56,7 +56,7 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
    */
   public static function getSubscribedEvents(): array {
     return [
-      HookEventDispatcherInterface::BLOCK_BUILD_ALTER => 'blockBuildAlter',
+      BlockHookEvents::BLOCK_BUILD_ALTER => 'blockBuildAlter',
     ];
   }
 
