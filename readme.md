@@ -27,7 +27,7 @@ part of this codebase is useful or will inspire someone out there.
 Before attempting to install this, you must add the Composer repositories as
 described in the installation instructions for these dependencies:
 
-* The [`ambientimpact_core` module](https://github.com/Ambient-Impact/drupal-modules).
+* The [`ambientimpact_core` module](https://github.com/Ambient-Impact/drupal-ambientimpact-core).
 
 * The following Omnipedia modules:
 
