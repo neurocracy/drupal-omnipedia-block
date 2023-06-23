@@ -31,8 +31,6 @@ described in the installation instructions for these dependencies:
 
 * The following Omnipedia modules:
 
-  * `omnipedia_access` (not currently open source)
-
   * [`omnipedia_changes`](https://github.com/neurocracy/drupal-omnipedia-changes)
 
   * [`omnipedia_content`](https://github.com/neurocracy/drupal-omnipedia-content)
@@ -169,3 +167,7 @@ The following major version bumps indicate breaking changes:
   * Removed all use of the `omnipedia_commerce` module and removed it from dependencies.
 
   * Removed the [`\Drupal\omnipedia_block\Plugin\Block\Join` block](https://github.com/neurocracy/drupal-omnipedia-block/blob/5.x/src/Plugin/Block/Join.php); you can still find it in the 5.x and older branches.
+
+  * Removed all use of the `omnipedia_access` module and removed it from dependencies.
+
+  * Removed all use of the `permissions_by_term:access_result_cache` cache tag, removing reliance on the [Permissions by Term module](https://www.drupal.org/project/permissions_by_term).

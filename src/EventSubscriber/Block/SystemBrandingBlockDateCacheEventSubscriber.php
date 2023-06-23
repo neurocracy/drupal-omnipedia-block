@@ -87,13 +87,11 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
       ['omnipedia_dates', 'user.permissions', 'user.node_grants:view']
     );
 
-    // Add the current date cache tag, cache tags from all main pages, and the
-    // Permissions by Term access result cache tag.
+    // Add the current date cache tag and cache tags from all main pages.
     foreach ([
       ['omnipedia_dates:' . $this->timeline
         ->getDateFormatted('current', 'storage')],
-      $this->wikiNodeMainPage->getMainPagesCacheTags(),
-      ['permissions_by_term:access_result_cache'],
+      $this->wikiNodeMainPage->getMainPagesCacheTags()
     ] as $tags) {
 
       $build['#cache']['tags'] = Cache::mergeTags(

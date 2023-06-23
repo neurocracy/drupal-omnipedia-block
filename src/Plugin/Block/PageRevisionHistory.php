@@ -450,19 +450,23 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $nodeRevisions = $this->getWikiNodeRevisions();
 
     /** @var array */
-    $tags = [
-      // This ensures that this block's cache is invalidated whenever the
-      // Permissions by Term cache is invalidated, which occurs when a user's
-      // content permissions change.
-      'permissions_by_term:access_result_cache',
-    ];
+    $tags = [];
 
-    // Add a cache tag for every node revision so that this block is invalidated
-    // if/when the node changes. Note that these are added even if the user does
-    // not have access to the node for when/if access is granted so that the
-    // block cache is correctly invalidated and rebuilt.
     foreach ($nodeRevisions as $nodeRevision) {
-      $tags[] = 'node:' . $nodeRevision['nid'];
+
+      /** @var \Drupal\omnipedia_core\Entity\NodeInterface|null */
+      $node = $this->wikiNodeResolver->resolveWikiNode($nodeRevision['nid']);
+
+      if (!\is_object($node)) {
+        continue;
+      }
+
+      // Add the cache tags for every node revision so that this block is
+      // invalidated if/when the node changes. Note that these are added even
+      // if the user does not have access to the node for when/if access is
+      // granted so that the block cache is correctly invalidated and rebuilt.
+      $tags = Cache::mergeTags($node->getCacheTags(), $tags);
+
     }
 
     return Cache::mergeTags(parent::getCacheTags(), $tags);

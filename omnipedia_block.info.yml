@@ -9,7 +9,6 @@ dependencies:
   - drupal:path_alias
   - drupal:views
   - hook_event_dispatcher:core_event_dispatcher
-  - omnipedia_access:omnipedia_access
   - omnipedia_changes:omnipedia_changes
   - omnipedia_content:omnipedia_content
   - omnipedia_core:omnipedia_core

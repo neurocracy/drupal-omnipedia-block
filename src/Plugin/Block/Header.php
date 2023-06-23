@@ -259,10 +259,6 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       'omnipedia_dates:' . $this->timeline->getDateFormatted(
         'current', 'storage'
       ),
-      // This ensures that this block's cache is invalidated whenever the
-      // Permissions by Term cache is invalidated, which occurs when a user's
-      // content permissions change.
-      'permissions_by_term:access_result_cache',
     ]);
 
   }
