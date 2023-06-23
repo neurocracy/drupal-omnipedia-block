@@ -7,7 +7,6 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
-use Drupal\omnipedia_commerce\Service\ContentAccessProductInterface;
 use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
 use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -24,13 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FounderMessageJoin extends FounderMessage {
 
   /**
-   * The Omnipedia content access product service.
-   *
-   * @var \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface
-   */
-  protected ContentAccessProductInterface $contentAccessProduct;
-
-  /**
    * The Drupal path alias manager.
    *
    * @var \Drupal\path_alias\AliasManagerInterface
@@ -40,9 +32,6 @@ class FounderMessageJoin extends FounderMessage {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\omnipedia_commerce\Service\ContentAccessProductInterface $contentAccessProduct
-   *   The Omnipedia content access product service.
-   *
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   The Drupal path alias manager.
    *
@@ -51,17 +40,15 @@ class FounderMessageJoin extends FounderMessage {
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    WikiNodeMainPageInterface     $wikiNodeMainPage,
-    ContentAccessProductInterface $contentAccessProduct,
-    AliasManagerInterface         $pathAliasManager
+    WikiNodeMainPageInterface $wikiNodeMainPage,
+    AliasManagerInterface     $pathAliasManager
   ) {
 
     parent::__construct(
       $configuration, $pluginId, $pluginDefinition, $wikiNodeMainPage
     );
 
-    $this->contentAccessProduct = $contentAccessProduct;
-    $this->pathAliasManager     = $pathAliasManager;
+    $this->pathAliasManager = $pathAliasManager;
 
   }
 
@@ -75,7 +62,6 @@ class FounderMessageJoin extends FounderMessage {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.wiki_node_main_page'),
-      $container->get('omnipedia_commerce.content_access_product'),
       $container->get('path_alias.manager')
     );
   }
@@ -141,6 +127,7 @@ class FounderMessageJoin extends FounderMessage {
       '#type'           => 'textfield',
       '#title'          => $this->t('Join link URL'),
       '#default_value'  => '',
+      '#required'       => true,
       '#description'    => $this->t('The URL to use as the join link. This can be a relative path to an internal page or an external URL.'),
     ];
 
@@ -224,9 +211,6 @@ class FounderMessageJoin extends FounderMessage {
     /** @var array */
     $config = $this->getConfiguration();
 
-    /** @var \Drupal\commerce_product\Entity\ProductInterface|null */
-    $product = $this->contentAccessProduct->getBaseProduct();
-
     // Don't render anything if the join URL has not been set and the base
     // product has not been configured.
     if (empty($config['join_url']) && !\is_object($product)) {
@@ -242,17 +226,8 @@ class FounderMessageJoin extends FounderMessage {
 
     $renderArray['#theme'] = 'omnipedia_founder_message_join';
 
-    if (!empty($config['join_url'])) {
-
-      /** @var \Drupal\Core\Url */
-      $renderArray['#join_url'] = $this->buildUrlObject($config['join_url']);
-
-    } else {
-
-      /** @var \Drupal\Core\Url */
-      $renderArray['#join_url'] = $product->toUrl();
-
-    }
+    /** @var \Drupal\Core\Url */
+    $renderArray['#join_url'] = $this->buildUrlObject($config['join_url']);
 
     $renderArray['#join_label'] = $config['join_label'];
 

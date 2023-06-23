@@ -35,8 +35,6 @@ described in the installation instructions for these dependencies:
 
   * [`omnipedia_changes`](https://github.com/neurocracy/drupal-omnipedia-changes)
 
-  * `omnipedia_commerce` (not currently open source)
-
   * [`omnipedia_content`](https://github.com/neurocracy/drupal-omnipedia-content)
 
   * [`omnipedia_core`](https://github.com/neurocracy/drupal-omnipedia-core)
@@ -80,7 +78,7 @@ In your root `composer.json`, add the following to the `"repositories"` section:
 ### Installing
 
 Once you've completed all of the above, run `composer require
-"drupal/omnipedia_block:5.x-dev@dev"` in the root of your project to have
+"drupal/omnipedia_block:6.x-dev@dev"` in the root of your project to have
 Composer install this and its required dependencies for you.
 
 ## Front-end assets
@@ -104,7 +102,7 @@ Once those are defined, add the following to the `"dependencies"` section of
 your top-level `package.json`:
 
 ```json
-"drupal-omnipedia-block": "workspace:^5"
+"drupal-omnipedia-block": "workspace:^6"
 ```
 
 Then run `yarn install` and let Yarn do the rest.
@@ -165,3 +163,9 @@ The following major version bumps indicate breaking changes:
   * Requires Drupal 9.5 or [Drupal 10](https://www.drupal.org/project/drupal/releases/10.0.0).
 
   * Increases minimum version of [Hook Event Dispatcher](https://www.drupal.org/project/hook_event_dispatcher) to 3.1, removes deprecated code, and adds support for 4.0 which supports Drupal 10.
+
+* 6.x:
+
+  * Removed all use of the `omnipedia_commerce` module and removed it from dependencies.
+
+  * Removed the [`\Drupal\omnipedia_block\Plugin\Block\Join` block](https://github.com/neurocracy/drupal-omnipedia-block/blob/5.x/src/Plugin/Block/Join.php); you can still find it in the 5.x and older branches.

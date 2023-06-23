@@ -11,7 +11,6 @@ dependencies:
   - hook_event_dispatcher:core_event_dispatcher
   - omnipedia_access:omnipedia_access
   - omnipedia_changes:omnipedia_changes
-  - omnipedia_commerce:omnipedia_commerce
   - omnipedia_content:omnipedia_content
   - omnipedia_core:omnipedia_core
   - omnipedia_date:omnipedia_date
