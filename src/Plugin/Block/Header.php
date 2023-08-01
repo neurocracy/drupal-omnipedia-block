@@ -8,7 +8,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
@@ -33,18 +33,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Header extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
+   * The Drupal entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
    * The Views executable factory.
    *
    * @var \Drupal\views\ViewExecutableFactory
    */
   protected ViewExecutableFactory $viewsExecutableFactory;
-
-  /**
-   * The Views entity storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected EntityStorageInterface $viewsStorage;
 
   /**
    * The Omnipedia timeline service.
@@ -87,17 +87,17 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    TimelineInterface       $timeline,
-    EntityStorageInterface  $viewsEntityStorage,
-    ViewExecutableFactory   $viewsExecutableFactory,
-    WikiNodeAccessInterface   $wikiNodeAccess,
-    WikiSearchInterface     $wikiSearch
+    EntityTypeManagerInterface  $entityTypeManager,
+    TimelineInterface           $timeline,
+    ViewExecutableFactory       $viewsExecutableFactory,
+    WikiNodeAccessInterface     $wikiNodeAccess,
+    WikiSearchInterface         $wikiSearch
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
 
+    $this->entityTypeManager      = $entityTypeManager;
     $this->timeline               = $timeline;
-    $this->viewsEntityStorage     = $viewsEntityStorage;
     $this->viewsExecutableFactory = $viewsExecutableFactory;
     $this->wikiNodeAccess         = $wikiNodeAccess;
     $this->wikiSearch             = $wikiSearch;
@@ -113,8 +113,8 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
+      $container->get('entity_type.manager'),
       $container->get('omnipedia.timeline'),
-      $container->get('entity_type.manager')->getStorage('view'),
       $container->get('views.executable'),
       $container->get('omnipedia.wiki_node_access'),
       $container->get('omnipedia.wiki_search')
@@ -199,7 +199,9 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     }
 
     /** @var \Drupal\views\ViewExecutable|null */
-    $viewEntity = $this->viewsEntityStorage->load('wiki_search');
+    $viewEntity = $this->entityTypeManager->getStorage('view')->load(
+      'wiki_search'
+    );
 
     if (!\is_object($viewEntity)) {
       return [];
