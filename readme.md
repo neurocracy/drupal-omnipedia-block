@@ -10,6 +10,8 @@ which contains various block plug-ins and related code for
 
 * [Drupal 9.5 or 10](https://www.drupal.org/download) ([Drupal 8 is end-of-life](https://www.drupal.org/psa-2021-11-30))
 
+* PHP 8.1
+
 * [Composer](https://getcomposer.org/)
 
 ## Drupal dependencies
