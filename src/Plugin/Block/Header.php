@@ -33,41 +33,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Header extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
-   * The Drupal entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The Views executable factory.
-   *
-   * @var \Drupal\views\ViewExecutableFactory
-   */
-  protected ViewExecutableFactory $viewsExecutableFactory;
-
-  /**
-   * The Omnipedia timeline service.
-   *
-   * @var \Drupal\omnipedia_date\Service\TimelineInterface
-   */
-  protected TimelineInterface $timeline;
-
-  /**
-   * The Omnipedia wiki node access service.
-   *
-   * @var \Drupal\omnipedia_core\Service\WikiNodeAccessInterface
-   */
-  protected WikiNodeAccessInterface $wikiNodeAccess;
-
-  /**
-   * The Omnipedia wiki search service.
-   *
-   * @var \Drupal\omnipedia_search\Service\WikiSearchInterface
-   */
-  protected WikiSearchInterface $wikiSearch;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\views\ViewExecutableFactory $viewsExecutableFactory
@@ -87,20 +52,14 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    EntityTypeManagerInterface  $entityTypeManager,
-    TimelineInterface           $timeline,
-    ViewExecutableFactory       $viewsExecutableFactory,
-    WikiNodeAccessInterface     $wikiNodeAccess,
-    WikiSearchInterface         $wikiSearch
+    protected readonly EntityTypeManagerInterface $entityTypeManager,
+    protected readonly TimelineInterface          $timeline,
+    protected readonly ViewExecutableFactory      $viewsExecutableFactory,
+    protected readonly WikiNodeAccessInterface    $wikiNodeAccess,
+    protected readonly WikiSearchInterface        $wikiSearch,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
-
-    $this->entityTypeManager      = $entityTypeManager;
-    $this->timeline               = $timeline;
-    $this->viewsExecutableFactory = $viewsExecutableFactory;
-    $this->wikiNodeAccess         = $wikiNodeAccess;
-    $this->wikiSearch             = $wikiSearch;
 
   }
 
@@ -117,7 +76,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
       $container->get('omnipedia.timeline'),
       $container->get('views.executable'),
       $container->get('omnipedia.wiki_node_access'),
-      $container->get('omnipedia.wiki_search')
+      $container->get('omnipedia.wiki_search'),
     );
   }
 

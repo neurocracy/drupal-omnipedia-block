@@ -15,23 +15,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ThemeOmnipediaFounderMessageEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The Drupal module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected ModuleHandlerInterface $moduleHandler;
-
-  /**
    * Event subscriber constructor; saves dependencies.
    *
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The Drupal module handler service.
    */
   public function __construct(
-    ModuleHandlerInterface $moduleHandler
-  ) {
-    $this->moduleHandler = $moduleHandler;
-  }
+    protected readonly ModuleHandlerInterface $moduleHandler,
+  ) {}
 
   /**
    * {@inheritdoc}

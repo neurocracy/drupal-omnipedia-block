@@ -26,13 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FounderMessage extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
-   * The Omnipedia wiki node main page service.
-   *
-   * @var \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface
-   */
-  protected WikiNodeMainPageInterface $wikiNodeMainPage;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface $wikiNodeMainPage
@@ -40,12 +33,10 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    WikiNodeMainPageInterface $wikiNodeMainPage
+    protected readonly WikiNodeMainPageInterface $wikiNodeMainPage,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
-
-    $this->wikiNodeMainPage = $wikiNodeMainPage;
 
   }
 
@@ -58,7 +49,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.wiki_node_main_page')
+      $container->get('omnipedia.wiki_node_main_page'),
     );
   }
 

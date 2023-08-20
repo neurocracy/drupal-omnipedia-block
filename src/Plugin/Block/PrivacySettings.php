@@ -42,27 +42,6 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
   protected const PLACEHOLDER_BASE_CLASS = 'omnipedia-privacy-settings-placeholder';
 
   /**
-   * The Drupal configuration object factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected ConfigFactoryInterface $configFactory;
-
-  /**
-   * The current user proxy service.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected AccountProxyInterface $currentUser;
-
-  /**
-   * Our logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $loggerChannel;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
@@ -76,16 +55,12 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    ConfigFactoryInterface  $configFactory,
-    AccountProxyInterface   $currentUser,
-    LoggerInterface         $loggerChannel
+    protected readonly ConfigFactoryInterface $configFactory,
+    protected readonly AccountProxyInterface  $currentUser,
+    protected readonly LoggerInterface        $loggerChannel,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
-
-    $this->configFactory  = $configFactory;
-    $this->currentUser    = $currentUser;
-    $this->loggerChannel  = $loggerChannel;
 
   }
 
@@ -100,7 +75,7 @@ class PrivacySettings extends BlockBase implements BlockPluginInterface, Contain
       $configuration, $pluginId, $pluginDefinition,
       $container->get('config.factory'),
       $container->get('current_user'),
-      $container->get('logger.channel.omnipedia_block')
+      $container->get('logger.channel.omnipedia_block'),
     );
   }
 

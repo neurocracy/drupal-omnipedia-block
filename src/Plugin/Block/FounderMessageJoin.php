@@ -23,13 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FounderMessageJoin extends FounderMessage {
 
   /**
-   * The Drupal path alias manager.
-   *
-   * @var \Drupal\path_alias\AliasManagerInterface
-   */
-  protected AliasManagerInterface $pathAliasManager;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
@@ -41,14 +34,12 @@ class FounderMessageJoin extends FounderMessage {
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     WikiNodeMainPageInterface $wikiNodeMainPage,
-    AliasManagerInterface     $pathAliasManager
+    protected readonly AliasManagerInterface $pathAliasManager,
   ) {
 
     parent::__construct(
-      $configuration, $pluginId, $pluginDefinition, $wikiNodeMainPage
+      $configuration, $pluginId, $pluginDefinition, $wikiNodeMainPage,
     );
-
-    $this->pathAliasManager = $pathAliasManager;
 
   }
 
@@ -62,7 +53,7 @@ class FounderMessageJoin extends FounderMessage {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
       $container->get('omnipedia.wiki_node_main_page'),
-      $container->get('path_alias.manager')
+      $container->get('path_alias.manager'),
     );
   }
 

@@ -31,34 +31,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PageRevisionHistory extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
-   * The Drupal access manager service.
-   *
-   * @var \Drupal\Core\Access\AccessManagerInterface
-   */
-  protected AccessManagerInterface $accessManager;
-
-  /**
-   * The Drupal current route match service.
-   *
-   * @var \Drupal\Core\Routing\StackedRouteMatchInterface
-   */
-  protected StackedRouteMatchInterface $currentRouteMatch;
-
-  /**
-   * The Omnipedia timeline service.
-   *
-   * @var \Drupal\omnipedia_date\Service\TimelineInterface
-   */
-  protected TimelineInterface $timeline;
-
-  /**
-   * The Omnipedia wiki node resolver service.
-   *
-   * @var \Drupal\omnipedia_core\Service\WikiNodeResolverInterface
-   */
-  protected WikiNodeResolverInterface $wikiNodeResolver;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\Core\Access\AccessManagerInterface $accessManager
@@ -75,18 +47,13 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    AccessManagerInterface      $accessManager,
-    StackedRouteMatchInterface  $currentRouteMatch,
-    TimelineInterface           $timeline,
-    WikiNodeResolverInterface   $wikiNodeResolver
+    protected readonly AccessManagerInterface     $accessManager,
+    protected readonly StackedRouteMatchInterface $currentRouteMatch,
+    protected readonly TimelineInterface          $timeline,
+    protected readonly WikiNodeResolverInterface  $wikiNodeResolver,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
-
-    $this->accessManager      = $accessManager;
-    $this->currentRouteMatch  = $currentRouteMatch;
-    $this->timeline           = $timeline;
-    $this->wikiNodeResolver   = $wikiNodeResolver;
 
   }
 
@@ -102,7 +69,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       $container->get('access_manager'),
       $container->get('current_route_match'),
       $container->get('omnipedia.timeline'),
-      $container->get('omnipedia.wiki_node_resolver')
+      $container->get('omnipedia.wiki_node_resolver'),
     );
   }
 

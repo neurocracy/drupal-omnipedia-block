@@ -27,13 +27,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
 
   /**
-   * The Omnipedia timeline service.
-   *
-   * @var \Drupal\omnipedia_date\Service\TimelineInterface
-   */
-  protected TimelineInterface $timeline;
-
-  /**
    * {@inheritdoc}
    *
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
@@ -41,12 +34,10 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    TimelineInterface $timeline
+    protected readonly TimelineInterface $timeline,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
-
-    $this->timeline = $timeline;
 
   }
 
@@ -59,7 +50,7 @@ class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFa
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.timeline')
+      $container->get('omnipedia.timeline'),
     );
   }
 
