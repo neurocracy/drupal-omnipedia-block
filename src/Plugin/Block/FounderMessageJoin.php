@@ -27,9 +27,6 @@ class FounderMessageJoin extends FounderMessage {
    *
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   The Drupal path alias manager.
-   *
-   * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
-   *   The Drupal path validator.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
