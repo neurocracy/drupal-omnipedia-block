@@ -13,6 +13,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\StackedRouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
+use Drupal\omnipedia_core\Service\WikiNodeRevisionInterface;
 use Drupal\omnipedia_date\Service\TimelineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -44,6 +45,9 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
    *
    * @param \Drupal\omnipedia_core\Service\WikiNodeResolverInterface $wikiNodeResolver
    *   The Omnipedia wiki node resolver service.
+   *
+   * @param \Drupal\omnipedia_core\Service\WikiNodeRevisionInterface $wikiNodeRevision
+   *   The Omnipedia wiki node revision service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
@@ -51,6 +55,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     protected readonly StackedRouteMatchInterface $currentRouteMatch,
     protected readonly TimelineInterface          $timeline,
     protected readonly WikiNodeResolverInterface  $wikiNodeResolver,
+    protected readonly WikiNodeRevisionInterface  $wikiNodeRevision,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
@@ -70,6 +75,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
       $container->get('current_route_match'),
       $container->get('omnipedia.timeline'),
       $container->get('omnipedia.wiki_node_resolver'),
+      $container->get('omnipedia.wiki_node_revision'),
     );
   }
 
@@ -122,7 +128,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
 
     // Data for this wiki node and its revisions.
     /** @var array */
-    $nodeRevisions = $node->getWikiNodeRevisions();
+    $nodeRevisions = $this->wikiNodeRevision->getWikiNodeRevisions($node);
 
     foreach ($nodeRevisions as &$nodeRevision) {
 
