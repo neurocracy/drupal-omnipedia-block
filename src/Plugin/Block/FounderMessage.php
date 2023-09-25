@@ -11,7 +11,8 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
+use Drupal\omnipedia_main_page\Service\MainPageCacheInterface;
+use Drupal\omnipedia_main_page\Service\MainPageRouteInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,12 +29,16 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface $wikiNodeMainPage
-   *   The Omnipedia wiki node main page service.
+   * @param \Drupal\omnipedia_main_page\Service\MainPageCacheInterface $mainPageCache
+   *   The Omnipedia main page cache service.
+   *
+   * @param \Drupal\omnipedia_main_page\Service\MainPageRouteInterface $mainPageRoute
+   *   The Omnipedia main page route service interface.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    protected readonly WikiNodeMainPageInterface $wikiNodeMainPage,
+    protected readonly MainPageCacheInterface $mainPageCache,
+    protected readonly MainPageRouteInterface $mainPageRoute,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
@@ -49,7 +54,8 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.wiki_node_main_page'),
+      $container->get('omnipedia_main_page.cache'),
+      $container->get('omnipedia_main_page.route'),
     );
   }
 
@@ -109,7 +115,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
     //
     // @todo Can this be exposed as a general option on all blocks so that we
     //   don't have to hard code it here?
-    if (!$this->wikiNodeMainPage->isCurrentRouteMainPage()) {
+    if (!$this->mainPageRoute->isCurrent()) {
       return [];
     }
 
@@ -175,7 +181,7 @@ class FounderMessage extends BlockBase implements BlockPluginInterface, Containe
       parent::getCacheTags(),
       // Add all main page cache tags. If there are any added or removed main
       // pages, this block may need to be rebuilt.
-      $this->wikiNodeMainPage->getMainPagesCacheTags()
+      $this->mainPageCache->getAllCacheTags(),
     );
 
   }

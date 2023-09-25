@@ -11,8 +11,8 @@ services:
   omnipedia_block.block_system_branding_block_date_cache_event_subscriber:
     class: Drupal\omnipedia_block\EventSubscriber\Block\SystemBrandingBlockDateCacheEventSubscriber
     arguments:
+      - '@omnipedia_main_page.cache'
       - '@omnipedia.timeline'
-      - '@omnipedia.wiki_node_main_page'
     tags:
       - { name: 'event_subscriber' }
 

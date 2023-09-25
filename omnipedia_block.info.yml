@@ -14,4 +14,5 @@ dependencies:
   - omnipedia_content:omnipedia_content
   - omnipedia_core:omnipedia_core
   - omnipedia_date:omnipedia_date
+  - omnipedia_main_page:omnipedia_main_page
   - omnipedia_search:omnipedia_search

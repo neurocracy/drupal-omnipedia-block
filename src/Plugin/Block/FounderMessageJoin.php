@@ -7,7 +7,8 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
-use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
+use Drupal\omnipedia_main_page\Service\MainPageCacheInterface;
+use Drupal\omnipedia_main_page\Service\MainPageRouteInterface;
 use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -30,12 +31,14 @@ class FounderMessageJoin extends FounderMessage {
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    WikiNodeMainPageInterface $wikiNodeMainPage,
+    MainPageCacheInterface $mainPageCache,
+    MainPageRouteInterface $mainPageRoute,
     protected readonly AliasManagerInterface $pathAliasManager,
   ) {
 
     parent::__construct(
-      $configuration, $pluginId, $pluginDefinition, $wikiNodeMainPage,
+      $configuration, $pluginId, $pluginDefinition,
+      $mainPageCache, $mainPageRoute,
     );
 
   }
@@ -49,7 +52,8 @@ class FounderMessageJoin extends FounderMessage {
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.wiki_node_main_page'),
+      $container->get('omnipedia_main_page.cache'),
+      $container->get('omnipedia_main_page.route'),
       $container->get('path_alias.manager'),
     );
   }

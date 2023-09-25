@@ -7,8 +7,8 @@ namespace Drupal\omnipedia_block\EventSubscriber\Block;
 use Drupal\Core\Cache\Cache;
 use Drupal\core_event_dispatcher\BlockHookEvents;
 use Drupal\core_event_dispatcher\Event\Block\BlockBuildAlterEvent;
-use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
 use Drupal\omnipedia_date\Service\TimelineInterface;
+use Drupal\omnipedia_main_page\Service\MainPageCacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -23,15 +23,15 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
   /**
    * Event subscriber constructor; saves dependencies.
    *
+   * @param \Drupal\omnipedia_main_page\Service\MainPageCacheInterface $mainPageCache
+   *   The Omnipedia main page cache service.
+   *
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
-   *
-   * @param \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface $wikiNodeMainPage
-   *   The Omnipedia wiki node main page service.
    */
   public function __construct(
-    protected readonly TimelineInterface          $timeline,
-    protected readonly WikiNodeMainPageInterface  $wikiNodeMainPage,
+    protected readonly MainPageCacheInterface $mainPageCache,
+    protected readonly TimelineInterface      $timeline,
   ) {}
 
   /**
@@ -74,7 +74,7 @@ class SystemBrandingBlockDateCacheEventSubscriber implements EventSubscriberInte
     foreach ([
       ['omnipedia_dates:' . $this->timeline
         ->getDateFormatted('current', 'storage')],
-      $this->wikiNodeMainPage->getMainPagesCacheTags()
+      $this->mainPageCache->getAllCacheTags()
     ] as $tags) {
 
       $build['#cache']['tags'] = Cache::mergeTags(
