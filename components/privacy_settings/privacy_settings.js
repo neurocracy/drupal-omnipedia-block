@@ -76,12 +76,9 @@ AmbientImpact.addComponent('OmnipediaPrivacySettings', function(
           'click.OmnipediaPrivacySettings',
           Drupal.eu_cookie_compliance.toggleWithdrawBanner
         )
-        .insertAfter($placeholderLink)
-        // Save the placeholder link to this button's data so that we can
-        // restore it on detach.
-        .data('privacySettingsLink', $placeholderLink);
+        .insertAfter($placeholderLink);
 
-      $placeholderLink.remove();
+      $placeholderLink.attr('hidden', true);
 
       $toggle = $button;
 
@@ -95,10 +92,18 @@ AmbientImpact.addComponent('OmnipediaPrivacySettings', function(
        */
       var $button = $('.omnipedia-privacy-settings-toggle', context);
 
-      // Restore the previously stored placeholder link.
-      $button.data('privacySettingsLink').insertAfter($button);
+      /**
+       * The privacy settings placeholder link wrapped in a jQuery collection.
+       *
+       * @type {jQuery}
+       */
+      var $placeholderLink = $(
+        '.omnipedia-privacy-settings-placeholder', context
+      );
 
       $button.remove();
+
+      $placeholderLink.removeAttr('hidden');
 
       $toggle = $();
 

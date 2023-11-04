@@ -7,7 +7,10 @@
 // in such a way that should minimize or eliminate any layout shifting when the
 // swap occurs.
 .omnipedia-privacy-settings-placeholder {
-  display: inline-grid !important;
+
+  &:not([hidden]) {
+    display: inline-grid !important;
+  }
 
   grid-template-areas: 'content';
 
