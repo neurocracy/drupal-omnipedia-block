@@ -36,10 +36,16 @@ AmbientImpact.addComponent('OmnipediaPrivacySettings', function(
     '.block-omnipedia-privacy-settings',
     function(context, settings) {
 
-      // Bail if we've already built the toggle so that we don't end up with
+      // Remove any existing toggle if it exists so that we don't end up with
       // duplicate elements.
       if ($toggle.length > 0) {
-        return;
+
+        console.warn(
+          'Found existing privacy toggle while attaching behaviour:', $toggle
+        );
+
+        $toggle.remove();
+
       }
 
       /**
