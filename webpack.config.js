@@ -5,7 +5,6 @@ const componentPaths = require('drupal-ambientimpact-core/componentPaths');
 const Encore = require('@symfony/webpack-encore');
 const glob = require('glob');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
