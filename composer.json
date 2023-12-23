@@ -17,13 +17,13 @@
   "require": {
     "php": "^8.1",
     "drupal/core": "^9.5 || ^10.0",
-    "drupal/ambientimpact_core": "1.x-dev@dev || 2.x-dev@dev",
+    "drupal/ambientimpact_core": "^1.0@dev || ^2.0@dev",
     "drupal/hook_event_dispatcher": "^3.1 || ^4.0",
-    "drupal/omnipedia_changes": "6.x-dev@dev || 7.x-dev@dev",
-    "drupal/omnipedia_content": "5.x-dev@dev || 6.x-dev@dev",
-    "drupal/omnipedia_core": "4.x-dev@dev || 5.x-dev@dev || 6.x-dev@dev",
-    "drupal/omnipedia_date": "4.x-dev@dev || 5.x-dev@dev",
-    "drupal/omnipedia_main_page": "1.x-dev@dev",
-    "drupal/omnipedia_search": "4.x-dev@dev"
+    "drupal/omnipedia_changes": "^6.0@dev || ^7.0@dev",
+    "drupal/omnipedia_content": "^5.0@dev || ^6.0@dev",
+    "drupal/omnipedia_core": "^4.0@dev || ^5.0@dev || ^6.0@dev",
+    "drupal/omnipedia_date": "^4.0@dev || ^5.0@dev",
+    "drupal/omnipedia_main_page": "^1.0@dev",
+    "drupal/omnipedia_search": "^4.0@dev"
   }
 }
