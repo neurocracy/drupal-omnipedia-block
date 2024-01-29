@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeAccessInterface;
 use Drupal\omnipedia_date\Service\TimelineInterface;
 use Drupal\omnipedia_search\Service\WikiSearchInterface;
+use Drupal\views\ViewExecutable;
 use Drupal\views\ViewExecutableFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -141,14 +142,35 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
   }
 
   /**
+   * Load and return the wiki search view executable.
+   *
+   * @return \Drupal\views\ViewExecutable|null
+   *   The wiki search view executable or null if it can't be loaded.
+   *
+   * @see \Drupal\views\Views::getView()
+   *   We load the view like in this static method except using dependency
+   *   injection.
+   */
+  protected function getSearchViewExecutable(): ?ViewExecutable {
+
+    /** @var \Drupal\views\ViewEntityInterface|null */
+    $viewEntity = $this->entityTypeManager->getStorage('view')->load(
+      'wiki_search',
+    );
+
+    if (!\is_object($viewEntity)) {
+      return null;
+    }
+
+    return $this->viewsExecutableFactory->get($viewEntity);
+
+  }
+
+  /**
    * Get the wiki search form.
    *
    * @return array
    *   The form render array or an empty array on error.
-   *
-   * @see \Drupal\views\Views::getView()
-   *   We load the view like in this static method except with dependency
-   *   injection.
    */
   protected function getSearchForm(): array {
 
@@ -158,23 +180,18 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
     }
 
     /** @var \Drupal\views\ViewExecutable|null */
-    $viewEntity = $this->entityTypeManager->getStorage('view')->load(
-      'wiki_search'
-    );
+    $viewExecutable = $this->getSearchViewExecutable();
 
-    if (!\is_object($viewEntity)) {
+    if (!\is_object($viewExecutable)) {
       return [];
     }
-
-    /** @var \Drupal\views\ViewExecutable */
-    $viewExecutable = $this->viewsExecutableFactory->get($viewEntity);
 
     // We have to build the display to ensure that various handlers are
     // initialized so that we don't cause any errors when building the form.
     $viewExecutable->build('page');
 
     return $viewExecutable->getDisplay()->getPlugin(
-      'exposed_form'
+      'exposed_form',
     )->renderExposedForm(true);
 
   }
@@ -216,9 +233,18 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public function getCacheTags() {
 
-    return Cache::mergeTags(parent::getCacheTags(), [
+    /** @var \Drupal\views\ViewExecutable|null */
+    $viewExecutable = $this->getSearchViewExecutable();
+
+    $viewTags = [];
+
+    if (\is_object($viewExecutable)) {
+      $viewTags = $viewExecutable->getCacheTags();
+    }
+
+    return Cache::mergeTags(parent::getCacheTags(), $viewTags, [
       'omnipedia_dates:' . $this->timeline->getDateFormatted(
-        'current', 'storage'
+        'current', 'storage',
       ),
     ]);
 

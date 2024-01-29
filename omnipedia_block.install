@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Invalidate the 'omnipedia_header' block to add wiki search view cache tags.
+ */
+function omnipedia_block_update_9601(): void {
+
+  // This is heavy handed as we want to avoid hard coding the theme that the
+  // block is placed for, but there doesn't seem to be a more specific tag we
+  // can use that doesn't require knowledge of the theme's name. Future cache
+  // tag invalidations should use the wiki search view cache tags, which will
+  // allow more targetted invalidation.
+  \Drupal::service('cache_tags.invalidator')->invalidateTags(['block_view']);
+
+}
