@@ -69,7 +69,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public static function create(
     ContainerInterface $container,
-    array $configuration, $pluginId, $pluginDefinition
+    array $configuration, $pluginId, $pluginDefinition,
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
@@ -203,7 +203,7 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
    */
   public function access(AccountInterface $account, $returnAsObject = false) {
     return AccessResult::allowedIf(
-      $this->wikiNodeAccess->canUserAccessAnyWikiNode($account)
+      $this->wikiNodeAccess->canUserAccessAnyWikiNode($account),
     );
   }
 
