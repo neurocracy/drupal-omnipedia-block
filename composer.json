@@ -2,7 +2,7 @@
   "name": "drupal/omnipedia_block",
   "description": "Omnipedia - Blocks",
   "type": "drupal-custom-module",
-  "license": "GPL-2.0-or-later",
+  "license": "GPL-3.0-or-later",
   "support": {
     "docs": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-block",
     "source": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-block"
