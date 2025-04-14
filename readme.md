@@ -23,17 +23,17 @@ described in the installation instructions for these dependencies:
 
 * The following Omnipedia modules:
 
-  * [`omnipedia_changes`](https://github.com/neurocracy/drupal-omnipedia-changes)
+  * [`omnipedia_changes`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-changes)
 
-  * [`omnipedia_content`](https://github.com/neurocracy/drupal-omnipedia-content)
+  * [`omnipedia_content`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-content)
 
-  * [`omnipedia_core`](https://github.com/neurocracy/drupal-omnipedia-core)
+  * [`omnipedia_core`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-core)
 
-  * [`omnipedia_date`](https://github.com/neurocracy/drupal-omnipedia-date)
+  * [`omnipedia_date`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-date)
 
-  * [`omnipedia_main_page`](https://github.com/neurocracy/drupal-omnipedia-main-page)
+  * [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page)
 
-  * [`omnipedia_search`](https://github.com/neurocracy/drupal-omnipedia-search)
+  * [`omnipedia_search`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-search)
 
 ## Front-end dependencies
 
@@ -61,9 +61,10 @@ should get you up and running.
 In your root `composer.json`, add the following to the `"repositories"` section:
 
 ```json
-"drupal/omnipedia_block": {
+{
   "type": "vcs",
-  "url": "https://github.com/neurocracy/drupal-omnipedia-block.git"
+  "url": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-block.git",
+  "only": ["drupal/omnipedia_block"]
 }
 ```
 
@@ -143,7 +144,7 @@ The following major version bumps indicate breaking changes:
 
   * Removed all use of the `omnipedia_commerce` module and removed it from dependencies.
 
-  * Removed the [`\Drupal\omnipedia_block\Plugin\Block\Join` block](https://github.com/neurocracy/drupal-omnipedia-block/blob/5.x/src/Plugin/Block/Join.php); you can still find it in the 5.x and older branches.
+  * Removed the [`\Drupal\omnipedia_block\Plugin\Block\Join` block](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-block/blob/5.x/src/Plugin/Block/Join.php); you can still find it in the 5.x and older branches.
 
   * Removed all use of the `omnipedia_access` module and removed it from dependencies.
 
