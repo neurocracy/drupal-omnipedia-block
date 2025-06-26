@@ -191,7 +191,11 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
         '#list_type'          => 'ol',
         '#items'              => [],
         // This is applied to the item list container.
-        '#wrapper_attributes' => ['class' => [$baseClass]],
+        '#wrapper_attributes' => [
+          'class' => [$baseClass],
+          // Enable preloading for the whole list.
+          'data-refreshless-lazy-preload' => true,
+        ],
         // This is applied to the actual list (<ol> element).
         '#attributes'         => ['class' => [$listClass]],
       ]
@@ -350,6 +354,8 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
             'title' => $this->t(
               'View changes between this page and its previous revision.'
             ),
+            // Enable preloading.
+            'data-refreshless-lazy-preload' => true,
           ],
         ],
       ];
@@ -377,6 +383,8 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
             'title' => $this->t(
               'Build or rebuild the changes between this page and its previous revision for the current user.'
             ),
+            // Make sure this is not preloaded if an ancenstor enables it.
+            'data-refreshless-lazy-preload' => 'false',
           ],
         ],
       ];
@@ -423,7 +431,7 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
     $nodeRevisions = $this->getWikiNodeRevisions();
 
     /** @var array */
-    $tags = [];
+    $tags = ['block_view:' . $this->getPluginId()];
 
     foreach ($nodeRevisions as $nodeRevision) {
 

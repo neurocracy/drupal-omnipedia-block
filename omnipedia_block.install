@@ -15,3 +15,18 @@ function omnipedia_block_update_9601(): void {
   \Drupal::service('cache_tags.invalidator')->invalidateTags(['block_view']);
 
 }
+
+/**
+ * Rebuild revision history block for new cache tag and RefreshLess preloading.
+ */
+function omnipedia_block_update_9602(): void {
+
+  // This is heavy handed as we want to avoid hard coding the theme that the
+  // block is placed for, but there doesn't seem to be a more specific tag we
+  // can use that doesn't require knowledge of the theme's name.
+  //
+  // This update adds the 'block_view:omnipedia_page_revision_history' tag that
+  // should be invalidated in the future instead.
+  \Drupal::service('cache_tags.invalidator')->invalidateTags(['block_view']);
+
+}
