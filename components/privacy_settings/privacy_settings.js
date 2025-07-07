@@ -30,10 +30,27 @@ AmbientImpact.addComponent('OmnipediaPrivacySettings', function(
     return $toggle;
   };
 
+  // We want this to be detached on leaving a page and before rendering a cached
+  // snapshot, but critically we should not detach on
+  // 'refreshless:before-cache' because that will cause a flash of the link, and
+  // break the privacy pop-up's reference to it.
+  //
+  // @todo Refactor this component so it doesn't store a persistent reference
+  //   to the toggle because that can easily get out of sync with the page as
+  //   demonstrated by RefreshLess.
+  //
+  // @todo Fix delaying caching not working in RefreshLess and remove this?
+  const triggers = AmbientImpact.defaults.detachTriggers.filter(
+    (trigger) => trigger !== 'refreshless:before-cache',
+  );
+
+  triggers.push('refreshless:cached-snapshot');
+
   this.addBehaviour(
     'OmnipediaPrivacySettings',
     'omnipedia-privacy-settings',
     '.block-omnipedia-privacy-settings',
+    triggers,
     function(context, settings) {
 
       // Remove any existing toggle if it exists so that we don't end up with
