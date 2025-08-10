@@ -385,6 +385,8 @@ class PageRevisionHistory extends BlockBase implements BlockPluginInterface, Con
             ),
             // Make sure this is not preloaded if an ancenstor enables it.
             'data-refreshless-lazy-preload' => 'false',
+            // Prevent prefetching this.
+            'data-turbo-prefetch' => 'false',
           ],
         ],
       ];

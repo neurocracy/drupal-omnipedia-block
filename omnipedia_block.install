@@ -30,3 +30,14 @@ function omnipedia_block_update_9602(): void {
   \Drupal::service('cache_tags.invalidator')->invalidateTags(['block_view']);
 
 }
+
+/**
+ * Rebuild revision history block to prevent RefreshLess prefetching build link.
+ */
+function omnipedia_block_update_9603(): void {
+
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([
+    'block_view:omnipedia_page_revision_history',
+  ]);
+
+}
