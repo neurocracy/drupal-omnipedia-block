@@ -196,15 +196,17 @@ class Header extends BlockBase implements BlockPluginInterface, ContainerFactory
 
   }
 
- /**
+  /**
    * {@inheritdoc}
    *
    * @todo Can/should we vary this per wiki date?
    */
-  public function access(AccountInterface $account, $returnAsObject = false) {
+  protected function blockAccess(AccountInterface $account) {
+
     return AccessResult::allowedIf(
       $this->wikiNodeAccess->canUserAccessAnyWikiNode($account),
     );
+
   }
 
   /**
