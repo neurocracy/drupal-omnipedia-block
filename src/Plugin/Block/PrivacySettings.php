@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category     = @Translation("Omnipedia"),
  * )
  */
-class PrivacySettings extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
+class PrivacySettings extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The EU Cookie Compliance settings configuration name.

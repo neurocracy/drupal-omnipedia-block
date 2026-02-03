@@ -7,7 +7,6 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\StackedRouteMatchInterface;
@@ -29,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category     = @Translation("Omnipedia"),
  * )
  */
-class PageRevisionHistory extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
+class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritdoc}

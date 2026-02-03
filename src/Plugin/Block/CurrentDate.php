@@ -6,7 +6,6 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -24,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category     = @Translation("Omnipedia"),
  * )
  */
-class CurrentDate extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
+class CurrentDate extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritdoc}
