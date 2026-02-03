@@ -6,16 +6,6 @@ services:
     factory: logger.factory:get
     arguments: ['omnipedia_block']
 
-  # Event subscriber to add cache contexts and tags to the
-  # 'system_branding_block' block.
-  omnipedia_block.block_system_branding_block_date_cache_event_subscriber:
-    class: Drupal\omnipedia_block\EventSubscriber\Block\SystemBrandingBlockDateCacheEventSubscriber
-    arguments:
-      - '@omnipedia_main_page.cache'
-      - '@omnipedia.timeline'
-    tags:
-      - { name: 'event_subscriber' }
-
   # Omnipedia founder message hook_theme() event subscriber.
   omnipedia_block.theme_omnipedia_founder_message_event_subscriber:
     class: Drupal\omnipedia_block\EventSubscriber\Theme\ThemeOmnipediaFounderMessageEventSubscriber
