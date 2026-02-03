@@ -146,8 +146,10 @@ class FounderMessage extends BlockBase implements ContainerFactoryPluginInterfac
    * In most cases, whether this block is shown should go hand-in-hand with
    * content being publicly accessible or not, so this keeps things simple.
    */
-  public function access(AccountInterface $account, $returnAsObject = false) {
+  protected function blockAccess(AccountInterface $account) {
+
     return AccessResult::allowedIfHasPermission($account, 'access content');
+
   }
 
   /**
