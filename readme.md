@@ -10,7 +10,7 @@ which contains various block plug-ins and related code for
 
 # Requirements
 
-* [Drupal 10.5 or 11.2](https://www.drupal.org/download)
+* [11.2](https://www.drupal.org/download)
 
 * PHP 8.2
 
@@ -71,7 +71,7 @@ In your root `composer.json`, add the following to the `"repositories"` section:
 ### Installing
 
 Once you've completed all of the above, run `composer require
-"drupal/omnipedia_block:^6.0@dev"` in the root of your project to have
+"drupal/omnipedia_block:^7.0@dev"` in the root of your project to have
 Composer install this and its required dependencies for you.
 
 ## Front-end assets
@@ -95,7 +95,7 @@ Once those are defined, add the following to the `"dependencies"` section of
 your top-level `package.json`:
 
 ```json
-"drupal-omnipedia-block": "workspace:^6"
+"drupal-omnipedia-block": "workspace:^7"
 ```
 
 Then run `yarn install` and let Yarn do the rest.
@@ -149,3 +149,7 @@ The following major version bumps indicate breaking changes:
   * Removed all use of the `omnipedia_access` module and removed it from dependencies.
 
   * Removed all use of the `permissions_by_term:access_result_cache` cache tag, removing reliance on the [Permissions by Term module](https://www.drupal.org/project/permissions_by_term).
+
+* 7.x:
+
+  * Removed Drupal 10 support; minimum Drupal core is now 11.2.
