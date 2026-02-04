@@ -114,10 +114,7 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
           '#type'       => 'link',
           '#title'      => $this->t('Menu'),
           '#url'        => Url::fromUserInput('#menu'),
-          // Must be an array and not an Attribute object.
-          //
-          // @see omnipedia-header.html.twig
-          '#attributes' => [],
+          '#attributes' => new Attribute(),
           '#wrapper_attributes' => new Attribute(),
         ],
       ],

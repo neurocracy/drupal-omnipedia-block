@@ -27,12 +27,16 @@
   ])
 }) %}
 
-{# Menu link BEM class. Note that this must be an array rather than an Attribute
-   object or else \Drupal\Core\Render\Element\Link::preRenderLink() will cause a
-   fatal error (invalid operand type) when it tries to merge this into
-   $element['#options']['attributes']. #}
-{% set menu_link = menu_link|merge_recursive({
-  '#attributes': {'class': [base_class ~ '__menu-link']}
+{# Menu link BEM class and array conversion.
+
+  We have to convert the attributes object into an array because
+  \Drupal\Core\Render\Element\Link::preRenderLink() merges this using the '+'
+  operator, leading to a fatal error if this is an Attributes object.
+#}
+{% set menu_link = menu_link|merge({
+  '#attributes': menu_link['#attributes'].addClass([
+    base_class ~ '__menu-link',
+  ]).toArray(),
 }) %}
 
 {% if search_form %}
