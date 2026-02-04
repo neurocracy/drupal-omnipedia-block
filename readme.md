@@ -33,8 +33,6 @@ described in the installation instructions for these dependencies:
 
   * [`omnipedia_date`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-date)
 
-  * [`omnipedia_search`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-search)
-
 ## Front-end dependencies
 
 To build front-end assets for this project, [Node.js](https://nodejs.org/) and
@@ -157,3 +155,5 @@ The following major version bumps indicate breaking changes:
   * Removed [Hook Event Dispatcher](https://www.drupal.org/project/hook_event_dispatcher) as a dependency in favour of Drupal core OOP hooks.
 
   * Moved all main page code to the [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page) module and removed it as a dependency.
+
+  * Moved the header block search code to the [`omnipedia_search`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-search) module and removed it as a dependency.

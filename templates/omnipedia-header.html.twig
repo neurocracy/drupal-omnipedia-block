@@ -12,10 +12,6 @@
  *
  * - 'menu_link': In-page link to the menu block.
  *
- * - 'search_form': The search form. This can be empty, i.e. on pages where it
- *   would not make sense such as on search pages, which have their own search
- *   fields.
- *
  * @ingroup themeable
  */
 #}
@@ -39,26 +35,12 @@
   ]).toArray(),
 }) %}
 
-{% if search_form %}
-  {# Search form BEM class. #}
-  {% set search_form = search_form|merge({
-    '#attributes': search_form['#attributes'].addClass([
-      base_class ~ '__search-form',
-    ])
-  }) %}
-{% endif %}
+<div{{ attributes.addClass([base_class]) }}>
 
-<div{{ attributes.addClass([
-  base_class,
-  base_class ~ (search_form ? '--has-search' : '--no-search'),
-]) }}>
   {{ current_date }}
 
   <div{{ menu_link['#wrapper_attributes'].addClass([base_class ~ '__menu']) }}>
     {{ menu_link }}
   </div>
 
-  {% if search_form %}
-    {{ search_form }}
-  {% endif %}
 </div>

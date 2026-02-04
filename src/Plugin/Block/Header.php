@@ -7,16 +7,12 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeAccessInterface;
 use Drupal\omnipedia_date\Service\TimelineInterface;
-use Drupal\omnipedia_search\Service\WikiSearchInterface;
-use Drupal\views\ViewExecutable;
-use Drupal\views\ViewExecutableFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,28 +31,16 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   *
-   * @param \Drupal\views\ViewExecutableFactory $viewsExecutableFactory
-   *   The Views executable factory.
-   *
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
    *
    * @param \Drupal\omnipedia_core\Service\WikiNodeAccessInterface $wikiNodeAccess
    *   The Omnipedia wiki node access service.
-   *
-   * @param \Drupal\omnipedia_search\Service\WikiSearchInterface $wikiSearch
-   *   The Omnipedia wiki search service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
-    protected readonly EntityTypeManagerInterface $entityTypeManager,
-    protected readonly TimelineInterface          $timeline,
-    protected readonly ViewExecutableFactory      $viewsExecutableFactory,
-    protected readonly WikiNodeAccessInterface    $wikiNodeAccess,
-    protected readonly WikiSearchInterface        $wikiSearch,
+    protected readonly TimelineInterface $timeline,
+    protected readonly WikiNodeAccessInterface $wikiNodeAccess,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
@@ -72,11 +56,8 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('entity_type.manager'),
       $container->get('omnipedia.timeline'),
-      $container->get('views.executable'),
       $container->get('omnipedia.wiki_node_access'),
-      $container->get('omnipedia.wiki_search'),
     );
   }
 
@@ -120,76 +101,7 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
       ],
     ];
 
-    /** @var array */
-    $searchForm = $this->getSearchForm();
-
-    if (!empty($searchForm)) {
-      if (isset($searchForm['#attributes'])) {
-        $searchForm['#attributes'] = new Attribute($searchForm['#attributes']);
-
-      } else {
-        $searchForm['#attributes'] = new Attribute();
-      }
-
-      $renderArray['header']['#search_form'] = $searchForm;
-    }
-
     return $renderArray;
-
-  }
-
-  /**
-   * Load and return the wiki search view executable.
-   *
-   * @return \Drupal\views\ViewExecutable|null
-   *   The wiki search view executable or null if it can't be loaded.
-   *
-   * @see \Drupal\views\Views::getView()
-   *   We load the view like in this static method except using dependency
-   *   injection.
-   */
-  protected function getSearchViewExecutable(): ?ViewExecutable {
-
-    /** @var \Drupal\views\ViewEntityInterface|null */
-    $viewEntity = $this->entityTypeManager->getStorage('view')->load(
-      'wiki_search',
-    );
-
-    if (!\is_object($viewEntity)) {
-      return null;
-    }
-
-    return $this->viewsExecutableFactory->get($viewEntity);
-
-  }
-
-  /**
-   * Get the wiki search form.
-   *
-   * @return array
-   *   The form render array or an empty array on error.
-   */
-  protected function getSearchForm(): array {
-
-    // Don't display the search form on the wiki search page as it's redundant.
-    if ($this->wikiSearch->isCurrentRouteSearchPage()) {
-      return [];
-    }
-
-    /** @var \Drupal\views\ViewExecutable|null */
-    $viewExecutable = $this->getSearchViewExecutable();
-
-    if (!\is_object($viewExecutable)) {
-      return [];
-    }
-
-    // We have to build the display to ensure that various handlers are
-    // initialized so that we don't cause any errors when building the form.
-    $viewExecutable->build('page');
-
-    return $viewExecutable->getDisplay()->getPlugin(
-      'exposed_form',
-    )->renderExposedForm(true);
 
   }
 
@@ -213,7 +125,6 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
 
     return Cache::mergeContexts(parent::getCacheContexts(), [
       'omnipedia_dates',
-      'omnipedia_is_wiki_search_page',
       'user.permissions',
       'user.node_grants:view',
     ]);
@@ -232,16 +143,7 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function getCacheTags() {
 
-    /** @var \Drupal\views\ViewExecutable|null */
-    $viewExecutable = $this->getSearchViewExecutable();
-
-    $viewTags = [];
-
-    if (\is_object($viewExecutable)) {
-      $viewTags = $viewExecutable->getCacheTags();
-    }
-
-    return Cache::mergeTags(parent::getCacheTags(), $viewTags, [
+    return Cache::mergeTags(parent::getCacheTags(), [
       'omnipedia_dates:' . $this->timeline->getDateFormatted(
         'current', 'storage',
       ),

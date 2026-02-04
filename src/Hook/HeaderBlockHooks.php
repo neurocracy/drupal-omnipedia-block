@@ -42,7 +42,6 @@ class HeaderBlockHooks {
           'base_class'    => 'omnipedia-header',
           'current_date'  => [],
           'menu_link'     => [],
-          'search_form'   => [],
         ],
         'template'  => 'omnipedia-header',
       ],
