@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Founder message block.
- *
- * @Block(
- *   id           = "omnipedia_founder_message",
- *   admin_label  = @Translation("Founder message"),
- *   category     = @Translation("Omnipedia"),
- * )
  */
+#[Block(
+  id: 'omnipedia_founder_message',
+  admin_label:  new TranslatableMarkup('Founder message'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class FounderMessage extends BlockBase {
 
   /**

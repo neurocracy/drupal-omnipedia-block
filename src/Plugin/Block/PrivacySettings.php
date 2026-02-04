@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\omnipedia_block\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,13 +23,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * progressively enhanced into a button to open the EU Cookie Compliance (GDPR)
  * pop-up. Other features may be added later, hence the generic name of this
  * block.
- *
- * @Block(
- *   id           = "omnipedia_privacy_settings",
- *   admin_label  = @Translation("Privacy settings"),
- *   category     = @Translation("Omnipedia"),
- * )
  */
+#[Block(
+  id: 'omnipedia_privacy_settings',
+  admin_label:  new TranslatableMarkup('Privacy settings'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class PrivacySettings extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**

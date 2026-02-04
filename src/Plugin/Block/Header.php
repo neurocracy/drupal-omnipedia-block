@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeAccessInterface;
@@ -16,16 +18,18 @@ use Drupal\omnipedia_date\Service\TimelineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Site header block.
+ * Omnipedia header block.
  *
- * This displays the current Omnipedia date and a search field.
- *
- * @Block(
- *   id           = "omnipedia_header",
- *   admin_label  = @Translation("Header"),
- *   category     = @Translation("Omnipedia"),
- * )
+ * This displays the current Omnipedia date and provides an in-page anchor
+ * link for the Omnipedia theme's sidebar menu on small screens. Several of
+ * our modules and the theme alter this block and its template to add
+ * additional features.
  */
+#[Block(
+  id: 'omnipedia_header',
+  admin_label:  new TranslatableMarkup('Header'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class Header extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**

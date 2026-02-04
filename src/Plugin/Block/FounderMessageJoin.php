@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\omnipedia_block\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
 use Drupal\path_alias\AliasManagerInterface;
@@ -13,13 +15,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Founder message block - join variant.
- *
- * @Block(
- *   id           = "omnipedia_founder_message_join",
- *   admin_label  = @Translation("Founder message (join)"),
- *   category     = @Translation("Omnipedia"),
- * )
  */
+#[Block(
+  id: 'omnipedia_founder_message_join',
+  admin_label:  new TranslatableMarkup('Founder message (join)'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class FounderMessageJoin extends FounderMessage implements ContainerFactoryPluginInterface {
 
   /**

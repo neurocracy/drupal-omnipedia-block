@@ -6,10 +6,12 @@ namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessManagerInterface;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\StackedRouteMatchInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
 use Drupal\omnipedia_core\Service\WikiNodeRevisionInterface;
@@ -21,13 +23,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * This displays a list of all available revisions of a page, with links to view
  * each revision.
- *
- * @Block(
- *   id           = "omnipedia_page_revision_history",
- *   admin_label  = @Translation("Page revision history"),
- *   category     = @Translation("Omnipedia"),
- * )
  */
+#[Block(
+  id: 'omnipedia_page_revision_history',
+  admin_label:  new TranslatableMarkup('Page revision history'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**

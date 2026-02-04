@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\omnipedia_date\Service\TimelineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,13 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Current date block.
  *
  * This displays a <time> element with the current Omnipedia date.
- *
- * @Block(
- *   id           = "omnipedia_current_date",
- *   admin_label  = @Translation("Current date"),
- *   category     = @Translation("Omnipedia"),
- * )
  */
+#[Block(
+  id: 'omnipedia_current_date',
+  admin_label:  new TranslatableMarkup('Current date'),
+  category:     new TranslatableMarkup('Omnipedia'),
+)]
 class CurrentDate extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
