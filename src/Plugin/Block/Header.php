@@ -118,6 +118,7 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
           //
           // @see omnipedia-header.html.twig
           '#attributes' => [],
+          '#wrapper_attributes' => new Attribute(),
         ],
       ],
     ];

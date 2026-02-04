@@ -39,6 +39,7 @@ class HeaderBlockHooks {
     return [
       'omnipedia_header' => [
         'variables' => [
+          'base_class'    => 'omnipedia-header',
           'current_date'  => [],
           'menu_link'     => [],
           'search_form'   => [],

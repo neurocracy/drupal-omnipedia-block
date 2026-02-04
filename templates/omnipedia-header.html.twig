@@ -5,6 +5,9 @@
  *
  * Available variables:
  *
+ * - 'base_class': The base BEM class applied to the container and used to
+ *   derive child and modifier classes from.
+ *
  * - 'current_date': The current date content.
  *
  * - 'menu_link': In-page link to the menu block.
@@ -16,8 +19,6 @@
  * @ingroup themeable
  */
 #}
-
-{% set base_class = 'omnipedia-header' %}
 
 {# Current date BEM class. #}
 {% set current_date = current_date|merge({
@@ -43,13 +44,13 @@
   }) %}
 {% endif %}
 
-<div{{ create_attribute({'class': [
+<div{{ attributes.addClass([
   base_class,
   base_class ~ (search_form ? '--has-search' : '--no-search'),
-]}) }}>
+]) }}>
   {{ current_date }}
 
-  <div{{ create_attribute({'class': [base_class ~ '__menu']}) }}>
+  <div{{ menu_link['#wrapper_attributes'].addClass([base_class ~ '__menu']) }}>
     {{ menu_link }}
   </div>
 
