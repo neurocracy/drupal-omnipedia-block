@@ -1,4 +1,11 @@
+parameters:
+  migrate.skip_procedural_hook_scan: true
+
 services:
+
+  _defaults:
+    autowire: true
+    autoconfigure: true
 
   # Our logger channel.
   logger.channel.omnipedia_block:
