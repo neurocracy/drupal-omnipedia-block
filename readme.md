@@ -156,4 +156,4 @@ The following major version bumps indicate breaking changes:
 
   * Removed [Hook Event Dispatcher](https://www.drupal.org/project/hook_event_dispatcher) as a dependency in favour of Drupal core OOP hooks.
 
-  * Moved all main page code to the [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page) module and removed dependency on it.
+  * Moved all main page code to the [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page) module and removed it as a dependency.
