@@ -23,6 +23,7 @@
     "drupal/omnipedia_content": "^5.0@dev || ^6.0@dev || ^7.0@dev",
     "drupal/omnipedia_core": "^4.0@dev || ^5.0@dev || ^6.0@dev",
     "drupal/omnipedia_date": "^4.0@dev || ^5.0@dev",
+    "drupal/omnipedia_main_page": "^1.0@dev",
     "drupal/omnipedia_search": "^4.0@dev"
   }
 }

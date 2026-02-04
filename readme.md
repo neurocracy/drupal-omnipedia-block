@@ -33,6 +33,8 @@ described in the installation instructions for these dependencies:
 
   * [`omnipedia_date`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-date)
 
+  * [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page)
+
   * [`omnipedia_search`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-search)
 
 ## Front-end dependencies

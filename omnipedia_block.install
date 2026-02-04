@@ -50,12 +50,3 @@ function omnipedia_block_update_9604(): void {
   \Drupal::service('kernel')->invalidateContainer();
 
 }
-
-/**
- * Clear cached block definitions for founder block main page code removal.
- */
-function omnipedia_block_update_9605(): void {
-
-  \Drupal::service('plugin.manager.block')->clearCachedDefinitions();
-
-}

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_block\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
+use Drupal\omnipedia_main_page\Service\MainPageCacheInterface;
+use Drupal\omnipedia_main_page\Service\MainPageRouteInterface;
 use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category     = @Translation("Omnipedia"),
  * )
  */
-class FounderMessageJoin extends FounderMessage implements ContainerFactoryPluginInterface {
+class FounderMessageJoin extends FounderMessage {
 
   /**
    * {@inheritdoc}
@@ -30,11 +31,14 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
+    MainPageCacheInterface $mainPageCache,
+    MainPageRouteInterface $mainPageRoute,
     protected readonly AliasManagerInterface $pathAliasManager,
   ) {
 
     parent::__construct(
       $configuration, $pluginId, $pluginDefinition,
+      $mainPageCache, $mainPageRoute,
     );
 
   }
@@ -48,7 +52,9 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get(AliasManagerInterface::class),
+      $container->get('omnipedia_main_page.cache'),
+      $container->get('omnipedia_main_page.route'),
+      $container->get('path_alias.manager'),
     );
   }
 
@@ -205,6 +211,10 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
 
     /** @var array */
     $renderArray = parent::build();
+
+    if (empty($renderArray)) {
+      return $renderArray;
+    }
 
     $renderArray['#theme'] = 'omnipedia_founder_message_join';
 
