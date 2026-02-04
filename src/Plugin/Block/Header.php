@@ -35,11 +35,11 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   *
    * @param \Drupal\views\ViewExecutableFactory $viewsExecutableFactory
    *   The Views executable factory.
-   *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $viewsEntityStorage
-   *   The Views entity storage.
    *
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
