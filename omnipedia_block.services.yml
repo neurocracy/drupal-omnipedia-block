@@ -5,19 +5,3 @@ services:
     class: Drupal\Core\Logger\LoggerChannel
     factory: logger.factory:get
     arguments: ['omnipedia_block']
-
-  # Omnipedia founder message hook_theme() event subscriber.
-  omnipedia_block.theme_omnipedia_founder_message_event_subscriber:
-    class: Drupal\omnipedia_block\EventSubscriber\Theme\ThemeOmnipediaFounderMessageEventSubscriber
-    arguments:
-      - '@module_handler'
-    tags:
-      - { name: 'event_subscriber' }
-
-  # Omnipedia header hook_theme() event subscriber.
-  omnipedia_block.theme_omnipedia_header_event_subscriber:
-    class: Drupal\omnipedia_block\EventSubscriber\Theme\ThemeOmnipediaHeaderEventSubscriber
-    arguments:
-      - '@module_handler'
-    tags:
-      - { name: 'event_subscriber' }

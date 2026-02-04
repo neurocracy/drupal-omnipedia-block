@@ -59,3 +59,12 @@ function omnipedia_block_update_9605(): void {
   \Drupal::service('plugin.manager.block')->clearCachedDefinitions();
 
 }
+
+/**
+ * Rebuild container for Hook Event Dispatcher to Drupal OOP hooks.
+ */
+function omnipedia_block_update_9606(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+}

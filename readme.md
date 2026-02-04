@@ -153,3 +153,5 @@ The following major version bumps indicate breaking changes:
 * 7.x:
 
   * Removed Drupal 10 support; minimum Drupal core is now 11.2.
+
+  * Removed [Hook Event Dispatcher](https://www.drupal.org/project/hook_event_dispatcher) as a dependency in favour of Drupal core OOP hooks.

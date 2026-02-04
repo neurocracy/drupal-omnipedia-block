@@ -9,7 +9,6 @@ dependencies:
   - ambientimpact_core:ambientimpact_core
   - drupal:path_alias
   - drupal:views
-  - hook_event_dispatcher:core_event_dispatcher
   - omnipedia_changes:omnipedia_changes
   - omnipedia_content:omnipedia_content
   - omnipedia_core:omnipedia_core
