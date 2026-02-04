@@ -41,12 +41,3 @@ function omnipedia_block_update_9603(): void {
   ]);
 
 }
-
-/**
- * Rebuild container for removal of system_branding_block event subscriber.
- */
-function omnipedia_block_update_9604(): void {
-
-  \Drupal::service('kernel')->invalidateContainer();
-
-}
