@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -52,15 +53,23 @@ class PrivacySettings extends BlockBase implements ContainerFactoryPluginInterfa
    *
    * @param \Psr\Log\LoggerInterface $loggerChannel
    *   Our logger channel.
+   *
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The Drupal string translation service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly AccountProxyInterface  $currentUser,
     protected readonly LoggerInterface        $loggerChannel,
+    TranslationInterface $stringTranslation,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
+
+    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
+    // real dependency injection for it. This does it for real.
+    $this->setStringTranslation($stringTranslation);
 
   }
 
@@ -76,6 +85,7 @@ class PrivacySettings extends BlockBase implements ContainerFactoryPluginInterfa
       $container->get(ConfigFactoryInterface::class),
       $container->get(AccountProxyInterface::class),
       $container->get('logger.channel.omnipedia_block'),
+      $container->get(TranslationInterface::class),
     );
   }
 

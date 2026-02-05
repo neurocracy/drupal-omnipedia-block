@@ -8,6 +8,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_block\Plugin\Block\FounderMessage;
 use Drupal\path_alias\AliasManagerInterface;
@@ -28,15 +29,23 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
    *
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   The Drupal path alias manager.
+   *
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The Drupal string translation service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     protected readonly AliasManagerInterface $pathAliasManager,
+    TranslationInterface $stringTranslation,
   ) {
 
     parent::__construct(
       $configuration, $pluginId, $pluginDefinition,
     );
+
+    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
+    // real dependency injection for it. This does it for real.
+    $this->setStringTranslation($stringTranslation);
 
   }
 
@@ -50,6 +59,7 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
     return new static(
       $configuration, $pluginId, $pluginDefinition,
       $container->get(AliasManagerInterface::class),
+      $container->get(TranslationInterface::class),
     );
   }
 

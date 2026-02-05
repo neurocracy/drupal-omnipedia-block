@@ -9,8 +9,11 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Founder message block.
@@ -20,7 +23,41 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   admin_label:  new TranslatableMarkup('Founder message'),
   category:     new TranslatableMarkup('Omnipedia'),
 )]
-class FounderMessage extends BlockBase {
+class FounderMessage extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The Drupal string translation service.
+   */
+  public function __construct(
+    array $configuration, string $pluginId, array $pluginDefinition,
+    TranslationInterface $stringTranslation,
+  ) {
+
+    parent::__construct(
+      $configuration, $pluginId, $pluginDefinition,
+    );
+
+    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
+    // real dependency injection for it. This does it for real.
+    $this->setStringTranslation($stringTranslation);
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration, $pluginId, $pluginDefinition
+  ) {
+    return new static(
+      $configuration, $pluginId, $pluginDefinition,
+      $container->get(TranslationInterface::class),
+    );
+  }
 
   /**
    * {@inheritdoc}

@@ -12,6 +12,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
 use Drupal\omnipedia_core\Service\WikiNodeRevisionInterface;
@@ -43,6 +44,9 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
    *
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The Drupal string translation service.
+   *
    * @param \Drupal\omnipedia_core\Service\WikiNodeResolverInterface $wikiNodeResolver
    *   The Omnipedia wiki node resolver service.
    *
@@ -54,11 +58,16 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
     protected readonly AccessManagerInterface     $accessManager,
     protected readonly RouteMatchInterface        $currentRouteMatch,
     protected readonly TimelineInterface          $timeline,
+    TranslationInterface $stringTranslation,
     protected readonly WikiNodeResolverInterface  $wikiNodeResolver,
     protected readonly WikiNodeRevisionInterface  $wikiNodeRevision,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
+
+    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
+    // real dependency injection for it. This does it for real.
+    $this->setStringTranslation($stringTranslation);
 
   }
 
@@ -74,6 +83,7 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
       $container->get(AccessManagerInterface::class),
       $container->get(RouteMatchInterface::class),
       $container->get(TimelineInterface::class),
+      $container->get(TranslationInterface::class),
       $container->get(WikiNodeResolverInterface::class),
       $container->get(WikiNodeRevisionInterface::class),
     );

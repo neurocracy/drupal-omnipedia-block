@@ -11,6 +11,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeAccessInterface;
@@ -38,16 +39,24 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
    *   The Omnipedia timeline service.
    *
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The Drupal string translation service.
+   *
    * @param \Drupal\omnipedia_core\Service\WikiNodeAccessInterface $wikiNodeAccess
    *   The Omnipedia wiki node access service.
    */
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     protected readonly TimelineInterface $timeline,
+    TranslationInterface $stringTranslation,
     protected readonly WikiNodeAccessInterface $wikiNodeAccess,
   ) {
 
     parent::__construct($configuration, $pluginId, $pluginDefinition);
+
+    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
+    // real dependency injection for it. This does it for real.
+    $this->setStringTranslation($stringTranslation);
 
   }
 
@@ -61,6 +70,7 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
       $container->get(TimelineInterface::class),
+      $container->get(TranslationInterface::class),
       $container->get(WikiNodeAccessInterface::class),
     );
   }
