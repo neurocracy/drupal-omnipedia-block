@@ -41,11 +41,8 @@ class FounderMessageJoin extends FounderMessage implements ContainerFactoryPlugi
 
     parent::__construct(
       $configuration, $pluginId, $pluginDefinition,
+      $stringTranslation,
     );
-
-    // BlockPluginTrait uses StringTranslationTrait but BlockBase doesn't use
-    // real dependency injection for it. This does it for real.
-    $this->setStringTranslation($stringTranslation);
 
   }
 
