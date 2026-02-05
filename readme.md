@@ -25,8 +25,6 @@ described in the installation instructions for these dependencies:
 
 * The following Omnipedia modules:
 
-  * [`omnipedia_changes`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-changes)
-
   * [`omnipedia_content`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-content)
 
   * [`omnipedia_core`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-core)
