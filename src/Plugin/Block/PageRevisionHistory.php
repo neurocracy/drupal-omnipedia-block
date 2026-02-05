@@ -10,7 +10,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\StackedRouteMatchInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
@@ -37,7 +37,7 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
    * @param \Drupal\Core\Access\AccessManagerInterface $accessManager
    *   The Drupal access manager service.
    *
-   * @param \Drupal\Core\Routing\StackedRouteMatchInterface $currentRouteMatch
+   * @param \Drupal\Core\Routing\RouteMatchInterface $currentRouteMatch
    *   The Drupal current route match service.
    *
    * @param \Drupal\omnipedia_date\Service\TimelineInterface $timeline
@@ -52,7 +52,7 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
   public function __construct(
     array $configuration, string $pluginId, array $pluginDefinition,
     protected readonly AccessManagerInterface     $accessManager,
-    protected readonly StackedRouteMatchInterface $currentRouteMatch,
+    protected readonly RouteMatchInterface        $currentRouteMatch,
     protected readonly TimelineInterface          $timeline,
     protected readonly WikiNodeResolverInterface  $wikiNodeResolver,
     protected readonly WikiNodeRevisionInterface  $wikiNodeRevision,
@@ -71,11 +71,11 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('access_manager'),
-      $container->get('current_route_match'),
-      $container->get('omnipedia.timeline'),
-      $container->get('omnipedia.wiki_node_resolver'),
-      $container->get('omnipedia.wiki_node_revision'),
+      $container->get(AccessManagerInterface::class),
+      $container->get(RouteMatchInterface::class),
+      $container->get(TimelineInterface::class),
+      $container->get(WikiNodeResolverInterface::class),
+      $container->get(WikiNodeRevisionInterface::class),
     );
   }
 

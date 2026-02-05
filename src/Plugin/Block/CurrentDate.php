@@ -50,7 +50,7 @@ class CurrentDate extends BlockBase implements ContainerFactoryPluginInterface {
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.timeline'),
+      $container->get(TimelineInterface::class),
     );
   }
 

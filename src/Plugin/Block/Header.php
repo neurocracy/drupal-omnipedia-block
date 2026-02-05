@@ -60,8 +60,8 @@ class Header extends BlockBase implements ContainerFactoryPluginInterface {
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('omnipedia.timeline'),
-      $container->get('omnipedia.wiki_node_access'),
+      $container->get(TimelineInterface::class),
+      $container->get(WikiNodeAccessInterface::class),
     );
   }
 

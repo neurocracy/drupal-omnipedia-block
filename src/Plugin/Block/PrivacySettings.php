@@ -73,8 +73,8 @@ class PrivacySettings extends BlockBase implements ContainerFactoryPluginInterfa
   ) {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
-      $container->get('config.factory'),
-      $container->get('current_user'),
+      $container->get(ConfigFactoryInterface::class),
+      $container->get(AccountProxyInterface::class),
       $container->get('logger.channel.omnipedia_block'),
     );
   }
