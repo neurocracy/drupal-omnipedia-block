@@ -77,3 +77,14 @@ function omnipedia_block_update_9607(): void {
   \Drupal::service('plugin.manager.block')->clearCachedDefinitions();
 
 }
+
+/**
+ * Rebuild revision history block for RefreshLess preloading changes.
+ */
+function omnipedia_block_update_9608(): void {
+
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([
+    'block_view:omnipedia_page_revision_history',
+  ]);
+
+}
