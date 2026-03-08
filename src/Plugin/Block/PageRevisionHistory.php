@@ -203,15 +203,27 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
         // This is applied to the item list container.
         '#wrapper_attributes' => [
           'class' => [$baseClass],
-          // Enable preloading for the whole list.
-          'data-refreshless-lazy-preload' => true,
+          // Disabled for now because the off-canvas sidebar on mobile isn't
+          // visible until it's opened, which is when the preloading is
+          // triggered, often resulting in a slower load of whatever you choose
+          // due to server load. For the time being, we just preload the date
+          // after the current one.
+          //
+          // @todo Re-enable when we can have more fine-grained control over
+          //   this?
+          //
+          // 'data-refreshless-lazy-preload' => true,
         ],
         // This is applied to the actual list (<ol> element).
         '#attributes'         => ['class' => [$listClass]],
       ]
     ];
 
-    foreach ($nodeRevisions as $nodeRevision) {
+    // Used during the loop below to apply RefreshLess preloading to just the
+    // next date after the current one.
+    $keys = array_keys($nodeRevisions);
+
+    foreach ($nodeRevisions as $key => $nodeRevision) {
 
       // Skip displaying this revision if the user doesn't have access to it.
       if ($nodeRevision['access'] === false) {
@@ -306,6 +318,19 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
           $item['#url'] = Url::fromRoute('entity.node.canonical', [
             'node' => $nodeRevision['nid'],
           ]);
+
+        }
+
+        $keyIndex = array_search($key, $keys);
+
+        // Enable RefreshLess preloading for this date's link if it's right
+        // after the current node's date to avoid overloading the server.
+        if (
+          $keyIndex > 0 &&
+          $keys[$keyIndex - 1] === (int) $node->nid->getString()
+        ) {
+
+          $item['#attributes']['data-refreshless-lazy-preload'] = true;
 
         }
 
