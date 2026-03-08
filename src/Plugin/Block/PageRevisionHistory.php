@@ -361,6 +361,8 @@ class PageRevisionHistory extends BlockBase implements ContainerFactoryPluginInt
             'title' => $this->t(
               'Stop displaying changes between this page and its previous revision.'
             ),
+            // Enable preloading.
+            'data-refreshless-lazy-preload' => true,
           ],
         ],
       ];
